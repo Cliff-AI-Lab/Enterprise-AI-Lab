@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════
+   行情分析智能助手 — Midnight Teal / Daylight
+   Dark + Light 双主题, 青绿色系企业风格
+   ═══════════════════════════════════════════ */
+
+@theme {
+  --color-bg-primary: var(--t-bg-primary);
+  --color-bg-card: var(--t-bg-card);
+  --color-bg-elevated: var(--t-bg-elevated);
+  --color-bg-hover: var(--t-bg-hover);
+
+  --color-border-default: var(--t-border-default);
+  --color-border-strong: var(--t-border-strong);
+  --color-border-accent: #14b8a6;
+
+  --color-neon: #14b8a6;
+  --color-neon-dim: #0d9488;
+  --color-forest: #065f46;
+  --color-forest-bright: #10b981;
+
+  --color-text-primary: var(--t-text-primary);
+  --color-text-secondary: var(--t-text-secondary);
+  --color-text-muted: var(--t-text-muted);
+  --color-text-inverse: var(--t-text-inverse);
+
+  --color-up: #10b981;
+  --color-down: #f43f5e;
+  --color-warning: #f59e0b;
+  --color-info: #6366f1;
+
+  --color-forecast: #818cf8;
+  --color-actual: #14b8a6;
+  --color-recommend: #10b981;
+
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ── Dark theme (default) ── */
+:root, [data-theme="dark"] {
+  --t-bg-primary: #0a0f1e;
+  --t-bg-card: #111827;
+  --t-bg-elevated: #1a2332;
+  --t-bg-hover: #1e293b;
+  --t-border-default: rgba(148, 163, 184, 0.1);
+  --t-border-strong: rgba(148, 163, 184, 0.2);
+  --t-text-primary: #f1f5f9;
+  --t-text-secondary: #94a3b8;
+  --t-text-muted: #475569;
+  --t-text-inverse: #0a0f1e;
+  --t-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  --t-scrollbar-thumb: rgba(148,163,184,0.15);
+  color-scheme: dark;
+}
+
+/* ── Light theme ── */
+[data-theme="light"] {
+  --t-bg-primary: #f1f5f9;
+  --t-bg-card: #ffffff;
+  --t-bg-elevated: #f8fafc;
+  --t-bg-hover: #e2e8f0;
+  --t-border-default: rgba(15, 23, 42, 0.08);
+  --t-border-strong: rgba(15, 23, 42, 0.15);
+  --t-text-primary: #0f172a;
+  --t-text-secondary: #475569;
+  --t-text-muted: #94a3b8;
+  --t-text-inverse: #f1f5f9;
+  --t-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --t-scrollbar-thumb: rgba(15,23,42,0.12);
+  color-scheme: light;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  background: var(--t-bg-primary);
+  color: var(--t-text-primary);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-feature-settings: 'tnum' 1;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--t-bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root { min-height: 100vh; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--t-scrollbar-thumb); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--t-border-strong); }
+
+/* ── Animations ── */
+@keyframes neon-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(20, 184, 166, 0.3); }
+  50% { box-shadow: 0 0 12px rgba(20, 184, 166, 0.6), 0 0 24px rgba(20, 184, 166, 0.15); }
+}
+@keyframes alert-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(244, 63, 94, 0.3); }
+  50% { box-shadow: 0 0 12px rgba(244, 63, 94, 0.6), 0 0 24px rgba(244, 63, 94, 0.15); }
+}
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.neon-pulse { animation: neon-pulse 2.5s ease-in-out infinite; }
+.alert-pulse { animation: alert-pulse 2s ease-in-out infinite; }
+.animate-count-up { animation: count-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* ── Card ── */
+.card-base {
+  background: var(--t-bg-card);
+  border: 1px solid var(--t-border-default);
+  border-radius: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+}
+.card-base:hover {
+  border-color: var(--t-border-strong);
+  box-shadow: var(--t-card-shadow);
+}
+
+/* ── Selection ── */
+::selection { background: rgba(20, 184, 166, 0.2); color: var(--t-text-primary); }
+
+/* ── Ambient glow (dark only) ── */
+[data-theme="dark"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(20, 184, 166, 0.03), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(99, 102, 241, 0.02), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="dark"] #root { position: relative; z-index: 1; }
