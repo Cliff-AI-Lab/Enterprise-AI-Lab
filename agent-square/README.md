@@ -7,12 +7,12 @@
 
 # 🌐 Agent Square · Industry Collection
 
-### **One year. 365 agents. 11 sectors. Every day, a new digital employee.**
+### **337 agents. 10 sectors. Your daily digital workforce.**
 
 <br/>
 
-[![Agents](https://img.shields.io/badge/Industry_Agents-334-0A84FF?style=for-the-badge&labelColor=0D1117)](#-sector-overview)
-[![Sectors](https://img.shields.io/badge/Verticals-10-00D4AA?style=for-the-badge&labelColor=0D1117)](#-sector-overview)
+[![Agents](https://img.shields.io/badge/Industry_Agents-306-0A84FF?style=for-the-badge&labelColor=0D1117)](#-sector-overview)
+[![Sectors](https://img.shields.io/badge/Verticals-9-00D4AA?style=for-the-badge&labelColor=0D1117)](#-sector-overview)
 [![Bilingual](https://img.shields.io/badge/Bilingual-ZH_·_EN-7B61FF?style=for-the-badge&labelColor=0D1117)](#-quick-start)
 [![Format](https://img.shields.io/badge/Format-Markdown_·_YAML-58A6FF?style=for-the-badge&labelColor=0D1117)](#-file-format)
 [![License](https://img.shields.io/badge/License-MIT-F59E0B?style=for-the-badge&labelColor=0D1117)](../LICENSE)
@@ -66,7 +66,7 @@ Each agent is a **self-contained `.md` file** with YAML frontmatter, bound APIs,
 
 <div align="center">
 
-<img src="assets/industry-map-en.png" width="68%" alt="Digital Intellectual Library Map — 334 Industry Agents across 10 Sectors" />
+<img src="assets/industry-map-en.png" width="68%" alt="Digital Intellectual Library Map — 306 Industry Agents across 9 Sectors" />
 
 </div>
 
@@ -79,14 +79,13 @@ Each agent is a **self-contained `.md` file** with YAML frontmatter, bound APIs,
 | 03 | ⚡ **Energy** | 能源 | **32** | Virtual Power Plant · Hydrogen · Carbon Assets · Nuclear O&M · Offshore Wind · LNG |
 | 04 | 💊 **Healthcare** | 医药 | **33** | Drug R&D · Precision Medicine · TCM AI · Gene Sequencing · Vaccine Traceability |
 | 05 | 🛒 **Retail** | 零售 | **34** | Livestream Commerce · Trendy-Toy IP · Fresh Produce · Beauty Incubation · Luxury Resale |
-| 06 | 🏛️ **Government** | 政务 | **28** | 12345 Hotline · City Brain · Judicial · Smart Party-Building · Fire Supervision |
 | 07 | 🎓 **Education** | 教育 | **25** | AI Tutor · Corporate University · Career Planning · MOOC · Special Ed · Kid Coding |
 | 08 | 🚚 **Logistics** | 物流 | **25** | Cold Chain · Cross-Border Brain · Smart Port · Last Mile · Hazmat · Air Cargo |
 | 09 | 💻 **Technology** | 科技 | **34** | AIOps · SOC · MCP Server · XR Spatial · Low-Code · AIGC · Serverless |
 | 11 | 🌾 **Agriculture** | 农牧 | **36** | Smart Farm · Digital Ranch · Agri-Futures · Swine Chain · Tea · Honey · Mushroom |
-| | **Total** | | **334** | |
+| | **Total** | | **306** | |
 
-> 💡 **Sector 10 (General)** — the 31 horizontal / digital-employee agents (secretary, translator, HR, ESG, …) lives in the companion repo **[Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square)**. Together the two repos form the complete **365 Agents, one per day of the year**.
+> 💡 **Sector 10 (General)** — the 31 horizontal / digital-employee agents (secretary, translator, HR, ESG, …) lives in the companion repo **[Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square)**. Together the two repos form the **337-agent Agent Square** collection.
 
 <br/>
 
@@ -137,9 +136,10 @@ The `A/B/C/D`-series composites describe multi-agent workflows — ready-made in
 
 <div align="center">
 
-[![Download ZH](https://img.shields.io/badge/📥_Chinese_Bundle-334_Agents-00D4AA?style=for-the-badge&labelColor=0D1117)](agent-square-industries-zh.zip)
+[![Download ZH](https://img.shields.io/badge/📥_Chinese_Bundle-306_Agents-00D4AA?style=for-the-badge&labelColor=0D1117)](agent-square-industries-zh.zip)
+
 &nbsp;
-[![Download EN](https://img.shields.io/badge/📥_English_Bundle-334_Agents-0A84FF?style=for-the-badge&labelColor=0D1117)](agent-square-industries-en.zip)
+[![Download EN](https://img.shields.io/badge/📥_English_Bundle-306_Agents-0A84FF?style=for-the-badge&labelColor=0D1117)](agent-square-industries-en.zip)
 
 </div>
 
@@ -175,12 +175,6 @@ Drug R&D Assistant · AI Pipeline · Hospital Ops · DTC Clinic · Real-World Ev
 <summary>🛒 <b>Retail (34)</b> — commerce, new and old</summary>
 
 Omni-Channel Commerce · Livestream Commerce · New Retail Store · Smart Supply Chain · Trendy-Toy IP · Fresh Produce · Beauty Incubation · F&B Chain · Luxury Resale · Used Book · Alcohol Vertical · Flower Delivery · Outdoor · Guochao · Bridal
-</details>
-
-<details>
-<summary>🏛️ <b>Government (28)</b> — citizen services and public affairs</summary>
-
-12345 Hotline · City Brain · Smart Transit · Police Assist · Public Health Emergency · Investment Promotion · Judicial Digitization · Smart Party-Building · Smart Urban Mgmt · Tax Audit · Emergency Mgmt · Fire Supervision · Civil Registry / Marriage / Veterans
 </details>
 
 <details>
@@ -238,7 +232,6 @@ emoji: 🏦
 | 💰 **Finance** | Alpha Vantage · Finnhub · CoinGecko · ExchangeRate-API · Plaid · Etherscan |
 | 🩺 **Health** | OpenFDA · ClinicalTrials.gov · PubMed · Disease.sh · NPPES · RxNorm |
 | 🌍 **Environment** | OpenWeatherMap · OpenAQ · NASA EONET · Carbon Interface · Climatiq |
-| 🏛️ **Government** | Data.gov · SEC EDGAR · USASpending · Federal Register · Congress.gov |
 | 🧑‍💻 **Development** | GitHub · Stripe · HuggingFace · Replicate · VirusTotal · Shodan |
 | 📦 **Logistics** | AfterShip · EasyPost · OpenRouteService · ShipEngine · 17track |
 | 🌾 **Agriculture** | OpenWeatherMap Agro · NASA POWER · OpenFoodFacts · Open Prices |
@@ -250,17 +243,17 @@ emoji: 🏦
 ```
 agent-square/
 ├── 🇨🇳 zh/
-│   ├── 01-金融/    (47)     06-政务/   (28)
-│   ├── 02-制造/    (40)     07-教育/   (25)
-│   ├── 03-能源/    (32)     08-物流/   (25)
-│   ├── 04-医药/    (33)     09-科技/   (34)
-│   └── 05-零售/    (34)     11-农牧/   (36)
+│   ├── 01-金融/    (47)     07-教育/   (25)
+│   ├── 02-制造/    (40)     08-物流/   (25)
+│   ├── 03-能源/    (32)     09-科技/   (34)
+│   ├── 04-医药/    (33)     11-农牧/   (36)
+│   └── 05-零售/    (34)
 ├── 🇺🇸 en/
-│   ├── 01-Finance/          06-Government/
-│   ├── 02-Manufacturing/    07-Education/
-│   ├── 03-Energy/           08-Logistics/
-│   ├── 04-Healthcare/       09-Technology/
-│   └── 05-Retail/           11-Agriculture/
+│   ├── 01-Finance/          07-Education/
+│   ├── 02-Manufacturing/    08-Logistics/
+│   ├── 03-Energy/           09-Technology/
+│   ├── 04-Healthcare/       11-Agriculture/
+│   └── 05-Retail/
 ├── 📦 agent-square-industries-zh.zip
 ├── 📦 agent-square-industries-en.zip
 └── 📖 README.md
@@ -283,7 +276,7 @@ agent-square/
 
 # 🌐 Agent 广场 · 行业智能体集
 
-### **一年 365 天，11 大板块，每天一个新数字员工。**
+### **337 个智能体，10 大板块，你的日常数字工作团队。**
 
 </div>
 
@@ -330,7 +323,7 @@ agent-square/
 
 <div align="center">
 
-<img src="assets/industry-map-zh.png" width="68%" alt="数字智库地图 — 10大行业 334 个智能体" />
+<img src="assets/industry-map-zh.png" width="68%" alt="数字智库地图 — 9大行业 306 个智能体" />
 
 </div>
 
@@ -343,14 +336,13 @@ agent-square/
 | 03 | ⚡ **能源** | **32** | 光伏/风电/核电/储能/氢能/碳资产/电网/水电/LNG |
 | 04 | 💊 **医药** | **33** | 新药研发/基因/医院/药房/医械/月子/口腔/康复 |
 | 05 | 🛒 **零售** | **34** | 电商/直播/奢侈品/母婴/酒类/户外/美业/婚嫁/潮玩 |
-| 06 | 🏛️ **政务** | **28** | 12345/城管/党建/司法/普查/应急/户籍/婚姻/消防 |
 | 07 | 🎓 **教育** | **25** | K12/大学/留学/少儿编程/特殊教育/心理/围棋/家庭 |
 | 08 | 🚚 **物流** | **25** | 城配/跨境/冷链/航空货运/港口/危化品/特种/干线 |
 | 09 | 💻 **科技** | **34** | AIOps/SOC/XR/AIGC/SaaS/低代码/MCP/剪辑/Serverless |
 | 11 | 🌾 **农牧** | **36** | 智慧农场/数字牧场/茶叶/水产/林业/蜂蜜/中药材/食用菌 |
-| | **合计** | **334** | |
+| | **合计** | **306** | |
 
-> 💡 **板块 10（通用）** —— 31 个水平向数字员工（秘书、翻译、HR、ESG 等）发布在姐妹仓库 **[Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square)**。两仓合计 **365 个智能体，一年每天一个**。
+> 💡 **板块 10（通用）** —— 31 个水平向数字员工（秘书、翻译、HR、ESG 等）发布在姐妹仓库 **[Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square)**。两仓合计 **337 个智能体**。
 
 <br/>
 
@@ -390,7 +382,7 @@ agent-square/
 
 [![下载中文包](https://img.shields.io/badge/📥_中文版-334_个智能体-00D4AA?style=for-the-badge&labelColor=0D1117)](agent-square-industries-zh.zip)
 &nbsp;
-[![Download EN](https://img.shields.io/badge/📥_English-334_Agents-0A84FF?style=for-the-badge&labelColor=0D1117)](agent-square-industries-en.zip)
+[![Download EN](https://img.shields.io/badge/📥_English-306_Agents-0A84FF?style=for-the-badge&labelColor=0D1117)](agent-square-industries-en.zip)
 
 </div>
 

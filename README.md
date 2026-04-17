@@ -12,7 +12,7 @@ Open-source AI solutions for enterprise scenarios across multiple industries. Ea
 
 | Collection | Directory | Description | Status |
 |------------|-----------|-------------|--------|
-| **Agent Square** | [`agent-square/`](agent-square/) | 334 industry-specific AI agents across 10 verticals (bilingual ZH·EN) | Active |
+| **Agent Square** | [`agent-square/`](agent-square/) | 306 industry-specific AI agents across 9 verticals (bilingual ZH·EN) | Active |
 | **Agri-Livestock** | [`agri-livestock/`](agri-livestock/) | Agriculture & livestock industry solutions | Active |
 | **Finance** | `finance/` | Financial services, risk & compliance | Coming Soon |
 | **Manufacturing** | `manufacturing/` | Smart manufacturing & supply chain | Coming Soon |
@@ -27,7 +27,7 @@ Production-ready agent definitions for 10 industry verticals — each agent is a
 
 | Scope | Count | Sectors |
 |-------|------:|---------|
-| [**Industry Collection**](agent-square/) | 334 | Finance · Manufacturing · Energy · Healthcare · Retail · Government · Education · Logistics · Technology · Agriculture |
+| [**Industry Collection**](agent-square/) | 306 | Finance · Manufacturing · Energy · Healthcare · Retail · Education · Logistics · Technology · Agriculture |
 
 > The general-purpose / digital-employee slice (31 agents) is published in the companion repo [Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square). Together they form the complete **365 agents, one per day of the year**.
 
