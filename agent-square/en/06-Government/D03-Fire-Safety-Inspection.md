@@ -1,0 +1,30 @@
+---
+name: 消防监督
+name_en: Fire Safety Inspection
+type: Composite Application
+industry: Government
+apis: [ThingSpeak, HuggingFace]
+emoji: 🔥
+---
+
+# 🔥 消防监督
+
+## Use Case
+消防救援支队的火灾隐患排查+审验+救援指挥。
+
+## Sample Output
+```
+【某市消防 月度】
+排查单位: 12,400
+隐患:
+  - 发现 6,800
+  - 重大 120 (已立案)
+  - 整改率 92%
+救援:
+  - 出警 2,800次
+  - 火灾 320起 (亡0重伤2)
+  - 非火警 2,480 (含救助)
+预警AI:
+  - 视频分析 火苗/烟雾识别
+  - 老旧小区重点监控
+```

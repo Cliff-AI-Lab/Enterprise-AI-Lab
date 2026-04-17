@@ -1,0 +1,55 @@
+---
+name: 智能供应链零售
+name_en: Retail Smart Supply Chain
+type: Composite Application
+industry: Retail
+composed_of: [供应链策略师, 仓储物流协调员, 电商运营专家]
+source_refs: [Supply Chain Strategist, Studio Operations]
+apis: [OpenCorporates, AfterShip, EasyPost]
+emoji: 🔗
+---
+
+# 🔗 智能供应链零售 Retail Smart Supply Chain
+
+## Use Case
+零售品牌的采购预测、补货、库存、退货、逆向物流全链数字化。
+
+## Agent Composition
+```
+[供应链策略师] → 采购预测
+[仓储物流协调员] → 多仓调拨
+[电商运营专家] → 销售计划
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenCorporates | 供应商 |
+| AfterShip + EasyPost | 物流聚合 |
+| Nager.Date | 节日备货 |
+
+## 核心工作流
+1. **需求预测**：SKU×渠道×周
+2. **采购下单**：lead time+MOQ
+3. **多仓调拨**：区域平衡
+4. **逆向物流**：退货归仓
+5. **KPI看板**：周转/缺货/OTIF
+
+## Sample Output
+```
+【零售供应链月报 Q1】
+SKU 8,200 | 供应商 186 | 仓库 12
+核心KPI:
+  - 缺货率: 1.8% (目标<3%) ✅
+  - 库存周转: 58天 (↓8天)
+  - 呆滞库存: 6.2% (降2pp)
+  - 准时交付OTIF: 94%
+预测精度 (四周):
+  - 头部100 SKU: MAPE 12% ✅
+  - 长尾: MAPE 32% (难以预测)
+优化:
+  - 开启直发模式 dropshipping 头部3家
+  - 节假日提前45天备货
+  - 退货率高SKU减少订单
+成本节省: ¥480万 (周转+降低呆滞)
+```

@@ -1,0 +1,61 @@
+---
+name: 3D打印云工厂
+name_en: 3D Printing Cloud Factory
+type: Composite Application
+industry: Manufacturing
+composed_of: [工艺优化师, 供应链策略师, 仓储物流协调员]
+source_refs: [Filament Optimization Specialist(engineering), Blender Add-on Engineer(game-development)]
+apis: [GitHub API, AfterShip, ThingSpeak]
+emoji: 🖨️
+---
+
+# 🖨️ 3D打印云工厂 3D Printing Cloud Factory
+
+## Use Case
+分布式3D打印云平台: 用户上传模型 → 最近打印服务商 → 邮寄到家。
+
+## Agent Composition (榨取罕用Agent)
+```
+[Filament Optimization Specialist] ← engineering (3D打印耗材专家)
+[Blender Add-on Engineer] ← game-development (3D建模)
+[工艺优化师] ← Workflow Optimizer
+[仓储物流协调员] ← Studio Operations
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| GitHub API | 模型仓库 |
+| AfterShip | 成品快递 |
+| ThingSpeak | 打印机状态 |
+
+## 核心工作流
+1. **模型审核**：几何合法+可打印
+2. **报价估算**：材料+时长+复杂度
+3. **调度打印**：最近/最空闲
+4. **质量监控**：远程摄像头
+5. **发货追踪**：快递到家
+
+## Sample Output
+```
+【3D打印云平台 月度】
+注册打印机: 2,400台 (覆盖45城)
+月订单: 28,000
+成功交付: 97%
+材料分布:
+  - PLA 52% (易用廉价)
+  - PETG 18% | ABS 12%
+  - 树脂(SLA) 10%
+  - 工程塑料+金属 8%
+应用:
+  - 创客/工程师原型 38%
+  - 定制手办/周边 28%
+  - 机械零件 18%
+  - 医疗辅具 8%
+  - 其他 8%
+均单价: ¥88 | 平均交付 3.2天
+服务商分成: 平台20% / 打印方60% / 快递20%
+质量:
+  - 首次通过率 85%
+  - 客户NPS 52
+```

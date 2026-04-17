@@ -1,0 +1,28 @@
+---
+name: 水电站智能运维
+name_en: Hydro Plant Smart O&M
+type: Composite Application
+industry: Energy
+apis: [ThingSpeak, OpenWeatherMap, EIA]
+emoji: 💦
+---
+
+# 💦 水电站智能运维
+
+## Use Case
+大型水电站的机组健康+库容调度+防洪排沙+通航协同。
+
+## Sample Output
+```
+【某大型水电 年报】
+装机: 6,400MW (26台机组)
+发电量: 280亿kWh
+机组可利用率 97%
+调度:
+  - 平衡发电+防洪+生态
+  - AI预测上游来水 准确率92%
+机组健康:
+  - 振动监测全覆盖
+  - 大修间隔 延长2年
+通航: 年过船 1.2亿吨
+```

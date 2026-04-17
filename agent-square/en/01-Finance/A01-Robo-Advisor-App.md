@@ -1,0 +1,52 @@
+---
+name: 智能投顾应用
+name_en: Robo-Advisor App
+type: Composite Application
+industry: Finance
+composed_of: [股票分析师, 加密货币顾问, 投资组合管理师, 新闻聚合编辑]
+apis: [Alpha Vantage, CoinGecko, Twelve Data, NewsAPI]
+emoji: 🤵
+---
+
+# 🤵 智能投顾应用 Robo-Advisor App
+
+## Use Case
+面向C端个人投资者，根据风险画像自动生成股+债+加密+现金的再平衡组合，按周推送操作建议和市场快讯。
+
+## Agent Composition
+```
+[新闻聚合编辑] → 每日市场快讯
+      ↓
+[股票分析师 + 加密货币顾问] → 资产研究
+      ↓
+[投资组合管理师] → 最优化配置 + 再平衡指令
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Alpha Vantage | 股票/ETF数据 |
+| CoinGecko | 加密资产 |
+| Twelve Data | 多市场行情 |
+| NewsAPI | 财经新闻 |
+| ExchangeRate-API | 外汇折算 |
+
+## 核心工作流
+1. **画像问卷**：年龄/收入/风险/期限
+2. **目标组合**：Markowitz最优化
+3. **每日监控**：价格+新闻+情绪
+4. **再平衡触发**：偏离>5%或季度
+5. **推送建议**：买/卖/持 + 金额
+
+## Sample Output
+```
+【王先生 本周投顾建议】
+当前净值: ¥523,400 (+2.3%)
+再平衡触发: 股票超配6.2%
+建议操作:
+  - 卖出ETF ¥32,000 (沪深300)
+  - 买入国债ETF ¥32,000
+理由: 近期A股快速上涨偏离目标, 锁定收益
+本周市场观点: 美联储暂停加息利好债市
+下次再平衡: 5/2
+```

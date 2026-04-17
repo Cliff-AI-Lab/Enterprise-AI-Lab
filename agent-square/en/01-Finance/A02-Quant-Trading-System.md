@@ -1,0 +1,53 @@
+---
+name: 量化交易系统
+name_en: Quant Trading System
+type: Composite Application
+industry: Finance
+composed_of: [股票分析师, 投资组合管理师, 数据采集工程师, AI模型评测师]
+apis: [Alpha Vantage, Finnhub, Twelve Data]
+emoji: 📈
+---
+
+# 📈 量化交易系统 Quant Trading System
+
+## Use Case
+中小私募/个人量化研究员用的多因子选股+择时+回测+实盘一体化系统。
+
+## Agent Composition
+```
+[数据采集工程师] → 历史+实时行情入库
+[股票分析师] → 因子库(价值/动量/质量)
+[AI模型评测师] → 策略回测 + Walk-forward
+[投资组合管理师] → 持仓优化 + 风险控制
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Alpha Vantage | 历史行情 |
+| Finnhub | 实时tick + 基本面 |
+| Twelve Data | 多市场覆盖 |
+| Financial Modeling Prep | 财务因子 |
+
+## 核心工作流
+1. **数据ETL**：分钟K+日K入TSDB
+2. **因子计算**：20+因子每日更新
+3. **选股**：多因子打分Top-N
+4. **回测**：2015-至今 + 前向检验
+5. **实盘**：信号→下单(paper/实盘)
+
+## Sample Output
+```
+【量化策略 "质量+动量" 月报】
+持仓数: 30只 | 调仓频率: 月度
+本月收益: +4.2% (基准 +1.8%, 超额 +2.4%)
+夏普比率: 1.85 | 最大回撤: -8.3%
+因子贡献:
+  - ROE: +1.8%
+  - 动量12-1: +1.5%
+  - 低波动: -0.3%
+下期持仓变更:
+  - 买入: 002415, 600519, ...
+  - 卖出: 000858, 600036, ...
+已生成订单, 待审批
+```

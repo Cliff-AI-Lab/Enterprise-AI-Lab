@@ -1,0 +1,58 @@
+---
+name: 医疗器械监管通报
+name_en: Medical Device Regulatory Monitor
+type: Composite Application
+industry: Healthcare
+composed_of: [医疗合规审查员, 政策研究员, 舆情监控员]
+source_refs: [Healthcare Marketing Compliance, Government Digital Presales]
+apis: [OpenFDA Device, Federal Register, NewsAPI]
+emoji: 🩺
+---
+
+# 🩺 医疗器械监管通报 Medical Device Regulatory Monitor
+
+## Use Case
+医疗器械企业质量法规部: FDA/NMPA召回、警告信、指南更新追踪+影响评估。
+
+## Agent Composition
+```
+[医疗合规审查员] ← Healthcare Marketing Compliance
+[政策研究员] ← Government Digital Presales
+[舆情监控员] ← Reddit Community Builder
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenFDA Device | 器械警告/召回/MDR |
+| Federal Register | 联邦公报 |
+| NewsAPI | 行业新闻 |
+
+## 核心工作流
+1. **法规扫描**：日更
+2. **召回公告**：同类产品警示
+3. **不良事件**：MDR数据库
+4. **指南解读**：影响评估
+5. **内部通报**：QA/RA/R&D
+
+## Sample Output
+```
+【医疗器械监管周报 W16】
+FDA (美国):
+  - 召回 28件 (I级3, II级20, III级5)
+    同类关注: 某心脏起搏器 I级召回 (可能致死)
+  - 警告信 2封 (质量体系)
+  - 新指南: SaMD网络安全V2 征求意见
+NMPA (中国):
+  - 医疗器械注册人制度2.0 实施细则
+  - 人工智能医疗器械审评要点更新
+  - 同类IVD产品检验标准调整
+EU (MDR/IVDR):
+  - MDR 过渡期延长确认
+对我司影响:
+  - 产品 X类似召回: 评估软件算法OK, 无风险 ✅
+  - SaMD指南: 需更新技术文件
+行动项:
+  - 研发补充模型可解释性文档
+  - QA更新召回应对SOP
+```

@@ -1,0 +1,45 @@
+---
+name: 罕见病登记
+name_en: Rare Disease Registry
+type: Composite Application
+industry: Healthcare
+apis: [ClinicalTrials.gov, OpenFDA, PubMed]
+emoji: 🧩
+---
+
+# 🧩 罕见病登记 Rare Disease Registry
+
+## Use Case
+政府/科研/药企的罕见病患者登记研究+药物开发+保险支付。
+
+## Core Capabilities
+- 真实世界登记
+- 自然病史研究
+- 药物试验招募
+- 保障政策研究
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| ClinicalTrials.gov | 临床试验匹配 |
+| OpenFDA Orphan | 罕见病药物 |
+| PubMed | 文献 |
+
+## Sample Output
+```
+【某罕见病登记 年度】
+病种: 38个 | 登记患者 12,400
+数据质量:
+  - 数据完整性 86%
+  - 随访率 82% (年度)
+自然史研究:
+  - 已发表论文 18篇
+  - 支持诊断标准更新 3次
+药物开发支持:
+  - 辅助11项孤儿药临床入组
+  - 加速2药获FDA突破性疗法认定
+患者服务:
+  - 疾病认知度提升
+  - 专科医生网络 82家
+  - 经济援助 ¥4,200万分发
+```

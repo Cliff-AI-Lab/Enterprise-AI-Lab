@@ -1,0 +1,59 @@
+---
+name: 智慧农场
+name_en: Smart Farm
+type: Composite Application
+industry: Agriculture
+composed_of: [农作物监测员, 精准施肥顾问, 病虫害预警员, 农机调度师]
+source_refs: [Environmental Monitor, Workflow Optimizer, Geographer]
+apis: [OpenWeatherMap Agro, NASA POWER, OpenRouteService, ThingSpeak]
+emoji: 🚜
+---
+
+# 🚜 智慧农场 Smart Farm
+
+## Use Case
+大型农场/合作社一体化数字农业: 遥感+物联网+农机自动化。
+
+## Agent Composition
+```
+[农作物监测员] → 卫星NDVI
+[精准施肥顾问] → 变量配肥
+[病虫害预警员] → 绿色防控
+[农机调度师] → 作业排程
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenWeatherMap Agro | 土壤/辐照 |
+| NASA POWER | 长期气候 |
+| OpenRouteService | 农机路径 |
+| ThingSpeak | IoT数据 |
+
+## 核心工作流
+1. **田间建模**：地块+土壤+作物
+2. **耕-种-管-收**：全程数字化
+3. **决策中枢**：水/肥/药/机联动
+4. **投入产出**：效益分析
+5. **追溯**：从田到盘
+
+## Sample Output
+```
+【万亩智慧农场 年度报告】
+农场: 2万亩 (玉米+大豆+小麦)
+数字化程度:
+  - 变量播种/施肥覆盖 100%
+  - 无人植保机 8架
+  - 无人收割机 12台
+  - 墒情/虫情传感器 240套
+KPI对比 (vs 传统):
+  - 产量 +12% (小麦) / +18% (玉米)
+  - 化肥↓15% (¥80万)
+  - 农药↓28% (¥62万)
+  - 人工↓40% (¥180万)
+ROI: 数字化投入¥600万 回收期2.8年
+溯源:
+  - 每批产品一物一码
+  - 订单农业占比 65%
+  - 品牌溢价15-25%
+```

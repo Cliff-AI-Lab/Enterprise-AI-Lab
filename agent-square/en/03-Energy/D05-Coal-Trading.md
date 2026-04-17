@@ -1,0 +1,29 @@
+---
+name: 煤炭交易
+name_en: Coal Trading
+type: Composite Application
+industry: Energy
+apis: [Alpha Vantage, ExchangeRate-API]
+emoji: ⚫
+---
+
+# ⚫ 煤炭交易
+
+## Use Case
+电煤/炼焦煤的贸易商: 长协+现货+进口+期货套保。
+
+## Sample Output
+```
+【某煤炭贸易 月度】
+贸易量: 800万吨
+  - 电煤 680万吨
+  - 焦煤 120万吨
+价格:
+  - 动力煤 CCI5500 ¥820/吨
+  - 主焦煤 京唐港 ¥1,680/吨
+进口:
+  - 蒙煤 280万吨
+  - 俄煤 120万吨
+  - 印尼 60万吨
+期货套保: 30%现货对冲
+```

@@ -1,0 +1,57 @@
+---
+name: 会员增长官
+name_en: Membership Growth Officer
+type: Composite Application
+industry: Retail
+composed_of: [电商运营专家, 客服智能助手, 销售数据分析师]
+source_refs: [Growth Hacker, Private Domain Operator]
+apis: [Shopify, LibreTranslate, NewsAPI]
+emoji: 👥
+---
+
+# 👥 会员增长官 Membership Growth Officer
+
+## Use Case
+品牌会员体系设计+分层运营+复购拉升+流失预警全流程。
+
+## Agent Composition
+```
+[电商运营专家] ← Growth Hacker
+[销售数据分析师] ← Sales Data Extraction
+[客服智能助手] ← Customer Service
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Shopify | 会员数据 |
+| 邮件/SMS APIs | 触达 |
+| QuickChart | 可视化 |
+
+## 核心工作流
+1. **分层体系**：RFM + LTV
+2. **权益设计**：等级特权
+3. **触达策略**：邮件/短信/私域
+4. **流失预警**：模型预测
+5. **ROI看板**：会员成本与收益
+
+## Sample Output
+```
+【某服饰 会员体系季报】
+会员数: 312万 | 活跃 (90天) 82万
+分层:
+  - VIP (Top1%): 3.12万, ARPU ¥6,800, 贡献 36%GMV
+  - Gold: 15万 | Silver: 68万 | 普通: 226万
+本季成效:
+  - 会员GMV占比 65% (↑5pp)
+  - 复购率 42% (↑3pp)
+  - LTV ¥2,180 (↑12%)
+活动:
+  - 年度感恩节: 送生日券ROI 6.8x
+  - VIP闭门沙龙: 到店转化率 38%
+流失预警模型:
+  - 本月预警 8,400人 (流失概率>70%)
+  - 自动挽回: 券+客服电话
+  - 挽回率 28%
+问题: 50%新客首次复购率仅18%, 待提升
+```

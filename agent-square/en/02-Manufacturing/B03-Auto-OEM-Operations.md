@@ -1,0 +1,42 @@
+---
+name: 汽车主机厂运营
+name_en: Auto OEM Operations
+type: Composite Application
+industry: Manufacturing
+apis: [Vehicle APIs, ThingSpeak, OpenCorporates]
+emoji: 🚗
+---
+
+# 🚗 汽车主机厂运营 Auto OEM Operations
+
+## Use Case
+车企(主机厂)的研-产-销-服全价值链数字化。
+
+## Core Capabilities
+- 智能工厂排产
+- 多车型柔性
+- 订单到交付
+- 车联网运营
+
+## Bound APIs (Vehicle类别)
+| API | Purpose |
+|-----|------|
+| NHTSA Vehicle | 车辆VIN解码 |
+| CarMD | 故障诊断 |
+| ThingSpeak | 车联网数据 |
+
+## Sample Output
+```
+【某电动车厂 月度】
+月产: 48,000台 | 日均 1,600台
+柔性生产: 同线3种车型
+OEE: 82%
+交付周期: 订单到交付 32天 (↓8天)
+车联网:
+  - 在线车辆 82万辆
+  - 日均数据 18TB
+  - OTA推送: 月度
+服务:
+  - 超充站 12,000个
+  - APP月活 58万
+```

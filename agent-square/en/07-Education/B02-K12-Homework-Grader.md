@@ -1,0 +1,46 @@
+---
+name: K12作业批改
+name_en: K12 Homework Grader
+type: Composite Application
+industry: Education
+apis: [HuggingFace, Wolfram Alpha, Wikipedia]
+emoji: ✏️
+---
+
+# ✏️ K12作业批改 K12 Homework Grader
+
+## Use Case
+中小学教师用: 拍照上传学生作业 → AI批改 → 错题解析 → 推送练习。
+
+## Core Capabilities
+- 多学科OCR+识别
+- 客观题秒批
+- 主观题智能评分
+- 错题推荐
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| HuggingFace OCR | 手写识别 |
+| Wolfram Alpha | 数学验算 |
+| Wikipedia | 知识扩展 |
+
+## Sample Output
+```
+【AI批改 教师日报】
+今日批改: 3,200份作业 (6个班)
+识别准确率:
+  - 印刷体 99.2%
+  - 手写 92%
+批改效果:
+  - 客观题秒批 准确率 98%
+  - 主观题评分 教师认可率 86%
+节省时间:
+  - 教师人均每日省 2.4小时
+错题分析:
+  - 全班共性错题 12道
+  - 自动推送专项练习
+  - 个性化学习路径
+问题反馈:
+  - 草稿潦草识别率低 (持续优化)
+```

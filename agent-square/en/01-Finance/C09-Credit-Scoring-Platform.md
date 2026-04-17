@@ -1,0 +1,25 @@
+---
+name: 征信评分平台
+name_en: Credit Scoring Platform
+type: Composite Application
+industry: Finance
+apis: [HIBP, OpenSanctions]
+emoji: 📊
+---
+
+# 📊 征信评分平台
+
+## Use Case
+个人/小微企业的征信大数据平台: 多源整合+评分模型+API服务。
+
+## Sample Output
+```
+【征信平台 月报】
+数据源: 42家 (银行/运营商/电商/社保)
+查询量: 2.8亿次
+评分:
+  - 个人分 分段 AA-F (10级)
+  - 企业分 对应
+  - 预测M12逾期KS 38 (优秀)
+API服务收入: $1.8M/月
+```

@@ -1,0 +1,27 @@
+---
+name: 快递加盟管理
+name_en: Courier Franchise Mgmt
+type: Composite Application
+industry: Logistics
+apis: [AfterShip, OpenCorporates]
+emoji: 📬
+---
+
+# 📬 快递加盟管理
+
+## Use Case
+三通一达总部对加盟商的管控: KPI+面单+罚款+培训。
+
+## Sample Output
+```
+【某快递总部 月度】
+加盟网点: 28,000
+日派件量: 8,200万
+面单系统:
+  - 电子面单率 100%
+  - 假单拦截 12,000张
+KPI管理:
+  - 网点评分 A级 62% / B级 28% / C级 8% / D级 2%
+  - 末端派送率 99.1%
+罚款/奖励: ¥6,800万 (本月)
+```

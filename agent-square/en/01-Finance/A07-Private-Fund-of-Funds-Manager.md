@@ -1,0 +1,55 @@
+---
+name: 私募FOF管家
+name_en: Private Fund of Funds Manager
+type: Composite Application
+industry: Finance
+composed_of: [投资组合管理师, 股票分析师, 风控合规官]
+apis: [Alpha Vantage, SEC EDGAR, Twelve Data]
+emoji: 🏛️
+---
+
+# 🏛️ 私募FOF管家 Private Fund of Funds Manager
+
+## Use Case
+FOF/MOM基金经理的子基金筛选、组合管理、尽调报告生成。
+
+## Agent Composition
+```
+[股票分析师] → 子基金业绩归因
+[投资组合管理师] → FOF持仓最优化
+[风控合规官] → 基金管理人合规
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| SEC EDGAR | 13F持仓披露 |
+| Alpha Vantage | 市场因子收益 |
+| Twelve Data | 基金净值拉取 |
+
+## 核心工作流
+1. **子基金筛选**：历史业绩+策略标签
+2. **相关性分析**：多元化效果
+3. **资产配置**：多策略组合
+4. **跟踪评估**：风险/收益/回撤
+5. **持有人报告**：季度生成
+
+## Sample Output
+```
+【FOF组合 2026Q1 报告】
+规模: ¥8.2亿 | 净值: 1.124 (+3.2%)
+子基金 12只, 分布:
+  - 股票多头 35%: 6只 (a, b, c...)
+  - 量化中性 25%: 2只
+  - 宏观CTA 20%: 2只
+  - 债券 15%: 1只
+  - 套利 5%: 1只
+业绩归因:
+  - 股票多头贡献 +2.1%
+  - 量化中性 +0.5%
+  - CTA -0.3% (商品震荡)
+风险:
+  - 夏普 1.4 | 最大回撤 -5.2%
+  - 相关性均值 0.28 (分散良好)
+调仓: 下月拟增加1只困境反转股票基金
+```

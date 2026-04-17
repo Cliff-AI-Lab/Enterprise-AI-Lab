@@ -1,0 +1,54 @@
+---
+name: 工业大模型应用师
+name_en: Industrial LLM Application Engineer
+type: Composite Application
+industry: Manufacturing
+composed_of: [AI模型评测师, 数据采集工程师, 工艺优化师]
+apis: [HuggingFace, Replicate, OpenAI-Compatible]
+emoji: 🤖
+---
+
+# 🤖 工业大模型应用师 Industrial LLM Application Engineer
+
+## Use Case
+把大模型应用到研发设计/工艺卡编写/设备手册问答/故障诊断等工业场景。
+
+## Agent Composition
+```
+[AI模型评测师] → 模型选择+精调
+[数据采集工程师] → 工业知识库RAG
+[工艺优化师] → 工艺规则嵌入
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| HuggingFace Inference | 开源模型 |
+| Replicate | 计算托管 |
+| Pinecone / 自建向量库 | RAG向量检索 |
+
+## 核心工作流
+1. **场景梳理**：Top10 高频问题
+2. **数据准备**：手册/工艺卡/图纸
+3. **RAG流水线**：向量+关键词
+4. **效果评估**：准确率/幻觉率
+5. **上线**：企微/钉钉 Bot
+
+## Sample Output
+```
+【工业助手落地 - 某家电制造】
+场景: 生产一线问答
+知识库: 890份文档, 12万段chunk
+模型: Qwen2.5-72B + 向量检索
+效果:
+  - 首答准确率: 89%
+  - 平均响应: 2.3秒
+  - 员工满意度: 4.5/5
+典型对话示例:
+  员工: "压缩机电流超过3.8A报警怎么处理?"
+  AI: "根据MG-series压缩机手册第4章...
+    Step1 检查电源电压±5%
+    Step2 ... (引用文档P23)
+    如无法处理, 联系值班师傅 (分机8401)"
+ROI: 降低工艺工程师70%咨询时间
+```

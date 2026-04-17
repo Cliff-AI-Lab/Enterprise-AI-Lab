@@ -1,0 +1,58 @@
+---
+name: 消费者洞察专家
+name_en: Consumer Insight Specialist
+type: Composite Application
+industry: Retail
+composed_of: [舆情监控员, 销售数据分析师, 新闻聚合编辑]
+source_refs: [Feedback Synthesizer, Trend Researcher, UX Researcher]
+apis: [Reddit API, NewsAPI, Instagram Graph]
+emoji: 🔍
+---
+
+# 🔍 消费者洞察专家 Consumer Insight Specialist
+
+## Use Case
+品牌研究部/市场部的消费者趋势洞察: 社交聆听+评论NLP+趋势预测。
+
+## Agent Composition
+```
+[舆情监控员] ← Trend Researcher (product)
+[销售数据分析师] ← Sales Data Extraction
+[新闻聚合编辑] ← Content Creator
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Reddit API | 品牌社群 |
+| NewsAPI + GNews | 趋势报道 |
+| Instagram Graph | 品牌@mention |
+| Text Analysis APIs | NLP |
+
+## 核心工作流
+1. **关键词/品牌监听**：多平台
+2. **评论情感分析**：正/负/中立
+3. **话题聚类**：特征抽取
+4. **趋势识别**：上升/稳定/下滑
+5. **产品机会**：未被满足需求
+
+## Sample Output
+```
+【某美妆 Q1 消费者洞察】
+监听量: 小红书 12万条 + 微博 8万 + 抖音评论 42万
+品牌NPS估算: 48 (行业均值 35)
+情感分布:
+  - 正面 54% | 中 31% | 负 15%
+爱吃点:
+  1. "包装高级" 提及 8,200次
+  2. "持妆久" 4,800次
+  3. "性价比好" 3,600次
+痛点:
+  1. "拔干" (口红) 1,800次 → 需改善配方
+  2. "物流慢" 1,200次 → 仓配改善
+未满足机会:
+  - 下沉市场"平价国货"关注度↑72%
+  - "男性护肤"GenZ 增长 150%
+  - "素食纯净美妆"讨论量翻倍
+产品建议: 开发男士线 + 纯净系列
+```

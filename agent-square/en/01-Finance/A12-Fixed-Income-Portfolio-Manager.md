@@ -1,0 +1,50 @@
+---
+name: 固收组合经理
+name_en: Fixed Income Portfolio Manager
+type: Composite Application
+industry: Finance
+composed_of: [投资组合管理师, 贷款评估师, 风控合规官]
+apis: [Treasury.gov, Alpha Vantage, SEC EDGAR]
+emoji: 📉
+---
+
+# 📉 固收组合经理 Fixed Income Portfolio Manager
+
+## Use Case
+银行理财/保险资管/公募债基的久期+信用+杠杆三大维度组合管理。
+
+## Agent Composition
+```
+[投资组合管理师] → 组合最优化
+[贷款评估师] → 信用债评级
+[风控合规官] → 合规限额
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Treasury.gov | 国债收益率曲线 |
+| Alpha Vantage | 利率数据 |
+| SEC EDGAR | 公司债发行人 |
+
+## 核心工作流
+1. **市场扫描**：收益率曲线形态
+2. **久期决策**：进攻/防御
+3. **信用下沉**：AAA→AA+机会
+4. **杠杆优化**：回购套利
+5. **压力测试**：利率+50BP场景
+
+## Sample Output
+```
+【固收组合 Q2-2026 策略】
+组合规模: ¥50亿 | 当前久期: 3.8年
+组合久期建议: 缩短至 3.2年
+原因: 美联储可能重启加息 + 国内CPI回升
+信用配置:
+  - 利率债 35% (维持)
+  - AAA信用债 40% (久期3年)
+  - AA+-AAA产业债 20% (重点看好)
+  - 转债/可交债 5%
+杠杆: 110% → 下调至 105% (流动性预警)
+压力测试: 利率+50BP, 组合亏损 -1.5%, 可承受
+```

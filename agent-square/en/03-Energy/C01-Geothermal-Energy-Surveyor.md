@@ -1,0 +1,29 @@
+---
+name: 地热能勘查
+name_en: Geothermal Energy Surveyor
+type: Composite Application
+industry: Energy
+apis: [NREL, USGS Earthquake, OpenWeatherMap]
+emoji: 🌋
+---
+
+# 🌋 地热能勘查
+
+## Use Case
+地热电站/地源热泵的选址+资源评估+投资测算。
+
+## Core Capabilities
+- 地温场建模
+- 井位优选
+- 发电/供热建模
+- 环境影响
+
+## Sample Output
+```
+【某省地热评估】
+资源: 高温>150℃ 8处 | 中温90-150 32处
+重点项目: 某县 150℃ 储层
+装机可行 30MW (20年寿命)
+投资 ¥6亿 | IRR 9.8% | 回收期 11年
+政策: 享受绿电溢价
+```

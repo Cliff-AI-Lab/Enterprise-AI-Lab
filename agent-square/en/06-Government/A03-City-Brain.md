@@ -1,0 +1,58 @@
+---
+name: 城市大脑
+name_en: City Brain
+type: Composite Application
+industry: Government
+composed_of: [公共数据分析师, 路径规划师, 舆情监控员, 环境监测员, 电力负荷预测员]
+source_refs: [Analytics Reporter, Geographer, Reality Checker]
+apis: [Data.gov, OpenRouteService, OpenAQ, OpenWeatherMap]
+emoji: 🌆
+---
+
+# 🌆 城市大脑 City Brain
+
+## Use Case
+城市级综合治理大脑: 交通+环境+安全+民生多域联动，决策驾驶舱。
+
+## Agent Composition
+```
+[公共数据分析师] → KPI大屏
+[路径规划师] → 交通调度
+[舆情监控员] → 民生热点
+[环境监测员] → 空气/水/噪声
+[电力负荷预测员] → 电/水/气
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Data.gov | 政府数据集 |
+| OpenRouteService | 交通路径 |
+| OpenAQ + EPA | 环境监测 |
+| OpenWeatherMap | 气象 |
+
+## 核心工作流
+1. **数据接入**：摄像头/IoT/业务系统
+2. **实时感知**：异常识别
+3. **跨域联动**：红绿灯+公交+警情
+4. **决策辅助**：AI建议行动
+5. **可视化指挥**：大屏+移动端
+
+## Sample Output
+```
+【某城市大脑 运营日报】
+接入数据源: 680个 | 活跃看板: 36
+今日关键:
+  - 早高峰拥堵指数 1.68 (↓0.12 vs 历史均值)
+  - 绿波联动节约通勤 14分钟
+  - AQI 68 (良), VOCs轻微上升
+  - 110接警 218件 (日均)
+  - 用电负荷 峰值 28.6GW (富余12%)
+联动示例:
+  - 大型演唱会前 → 公交+地铁加车次
+  - 暴雨预警 → 低洼路段自动封路
+  - 重污染天气 → 限行+施工暂停
+KPI趋势:
+  - 12345办结率 97%
+  - 市民满意度 91分
+```

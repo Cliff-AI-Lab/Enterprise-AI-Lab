@@ -1,0 +1,34 @@
+---
+name: 税务稽查
+name_en: Tax Audit AI
+type: Composite Application
+industry: Government
+apis: [SEC EDGAR, OpenCorporates, ExchangeRate-API]
+emoji: 🔍
+---
+
+# 🔍 税务稽查
+
+## Use Case
+税务机关的偷税漏税AI识别+风险企业精准稽查。
+
+## Core Capabilities
+- 发票数据挖掘
+- 关联交易识别
+- 薄弱主体画像
+- 稽查证据固定
+
+## Sample Output
+```
+【某市稽查局 月度】
+风险推送: 2,800户 | 立案 820户
+补税入库: ¥8.2亿
+典型案件:
+  1. 虚开发票 涉案 ¥18亿
+  2. 转移定价 补税 ¥3.2亿
+  3. 直播带货逃税 补税 ¥1.5亿
+AI应用:
+  - 风险模型召回率 82%
+  - 准确率 68%
+  - 稽查人效 +35%
+```

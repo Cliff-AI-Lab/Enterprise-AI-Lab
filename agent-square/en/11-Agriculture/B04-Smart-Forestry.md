@@ -1,0 +1,39 @@
+---
+name: 智慧林业
+name_en: Smart Forestry
+type: Composite Application
+industry: Agriculture
+apis: [NASA EONET, OpenWeatherMap, Carbon Interface]
+emoji: 🌲
+---
+
+# 🌲 智慧林业
+
+## Use Case
+林场的火险预警+森林健康+碳汇核算+生态旅游。
+
+## Core Capabilities
+- 火险等级+瞭望
+- 病虫害遥感
+- 碳汇计量
+- 生态旅游管理
+
+## Sample Output
+```
+【某林场 年度】
+林地面积: 180万亩
+火险:
+  - 发现火情 12次 (6级2次)
+  - 平均5分钟响应
+  - 0起蔓延事件
+病虫害:
+  - 松材线虫监测 全覆盖
+  - 处置 1,200亩 (<0.1%面积)
+碳汇:
+  - 年度核算 86万tCO2e
+  - CCER签发 62万吨
+  - 碳汇收入 ¥5,200万
+旅游:
+  - 年接待 38万人次
+  - 综合收入 ¥4,800万
+```

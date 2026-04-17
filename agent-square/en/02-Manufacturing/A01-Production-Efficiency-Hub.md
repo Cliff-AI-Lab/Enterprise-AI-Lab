@@ -1,0 +1,56 @@
+---
+name: 生产效能智能体
+name_en: Production Efficiency Hub
+type: Composite Application
+industry: Manufacturing
+composed_of: [设备运维工程师, 工艺优化师, 生产排程员, 数据采集工程师]
+apis: [ThingSpeak, UptimeRobot, OpenWeatherMap, Nager.Date]
+emoji: 🏭
+---
+
+# 🏭 生产效能智能体 Production Efficiency Hub
+
+## Use Case
+制造企业生产经理的一站式效能中枢：设备健康 + 工艺优化 + 排程 + 数据采集 全打通，目标提升OEE。
+
+## Agent Composition
+```
+[数据采集工程师] → PLC/传感器数据入湖
+      ↓
+[设备运维工程师] → OEE监控 + 故障预测
+      ↓
+[工艺优化师] → 瓶颈工位识别 + 改善提案
+      ↓
+[生产排程员] → 动态排程 + 插单应对
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| ThingSpeak | IoT数据流 |
+| UptimeRobot | 关键设备状态 |
+| OpenWeatherMap | 环境温湿度(对良率影响) |
+| Nager.Date | 假期影响 |
+
+## 核心工作流
+1. **实时采集**：每条线OEE+能耗+良率
+2. **异常识别**：OEE<80%触发
+3. **根因推断**：设备/工艺/物料/人员
+4. **排程优化**：动态插单/紧急订单
+5. **改善闭环**：PDCA + 效果跟踪
+
+## Sample Output
+```
+【生产效能日报 2026-04-17】
+全厂OEE: 85.6% (目标85% ✅)
+├ 线1 92% | 线2 78% ⚠️ | 线3 88% | 线4 84%
+线2诊断:
+  - 可用率↓: 设备DB-03计划外停机2小时
+  - 根因: 主轴振动超阈值 (建议换轴承)
+  - 已自动派工单, 下夜班停机检修
+工艺改善本周:
+  - 换模时间45→28分钟 (↓38%)
+  - 焊接一次通过率 +1.5pp
+本周产量预测: 48,200件 (订单需求 47,600, 富余 ✅)
+明日排程: 已按最优化下发MES
+```

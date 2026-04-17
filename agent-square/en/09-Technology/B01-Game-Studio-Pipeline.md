@@ -1,0 +1,63 @@
+---
+name: 游戏工作室管线
+name_en: Game Studio Pipeline
+type: Composite Application
+industry: Technology
+composed_of: [DevOps自动化师, AI模型评测师, 数据可视化师]
+source_refs: [Unity Architect, Unreal Systems Engineer, Unity Multiplayer Engineer, Game Designer, Level Designer, Narrative Designer, Game Audio Engineer, Technical Artist(game-development)]
+apis: [GitHub API, HuggingFace, Replicate]
+emoji: 🎮
+---
+
+# 🎮 游戏工作室管线 Game Studio Pipeline
+
+## Use Case
+中大型游戏工作室全流程: 策划/程序/美术/音频/QA 多工种协同+CI/CD+版本管理。
+
+## Agent Composition (重点利用 agency-agents/game-development 20个Agent)
+```
+[Game Designer] ← game-development
+[Level Designer] ← game-development
+[Narrative Designer] ← game-development
+[Unity Architect / Unreal Systems Engineer] ← game-development
+[Technical Artist] ← game-development
+[Game Audio Engineer] ← game-development
+[DevOps自动化师] ← DevOps Automator
+[AI模型评测师] ← Model QA Specialist
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| GitHub API | 代码+LFS |
+| HuggingFace | AIGC素材生成 |
+| Replicate | 模型托管 |
+| Mixamo (via other) | 动画库 |
+
+## 核心工作流
+1. **立项**：GDD + 原型
+2. **开发管线**：Perforce/Git LFS
+3. **构建CI/CD**：每日构建+自动测试
+4. **内容创作**：AI辅助美术/文案
+5. **发布运营**：多平台签包+热更
+
+## Sample Output
+```
+【某MMO手游 管线季度报告】
+团队: 120人 (策划28 / 程序46 / 美术32 / 音频8 / QA6)
+版本迭代:
+  - 每日构建 成功率 96% (自动化)
+  - 新版本节奏: 每月大版本 + 每周热更
+AIGC应用:
+  - NPC对白: GPT辅助生成 4,800条
+  - 配音: TTS生成 3,200条 (审核后用)
+  - 美术原画: SD辅助出图, 产能+50%
+  - 音效: AI生成环境音 80%
+质量监控:
+  - 崩溃率 0.08% (目标<0.1%)
+  - 平均FPS 58 (iPhone13+)
+  - 代码覆盖率 72%
+上线情况:
+  - iOS/Android/PC三端同步
+  - 首周DAU 180万
+```
