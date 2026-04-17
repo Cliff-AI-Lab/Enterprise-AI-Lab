@@ -51,10 +51,10 @@ Each agent is a **self-contained `.md` file** with YAML frontmatter, bound APIs,
 </td>
 <td width="33%" align="center">
 <br/>
-<h3>🌾</h3>
-<b>Ready for the Long Tail</b>
+<h3>📶</h3>
+<b>Simple → Complex</b>
 <br/>
-<sub>From 12345 hotline to orchid horticulture — real, specific, boring-in-the-best-way</sub>
+<sub>From a customer-service bot to full multi-agent orchestrations — every layer of complexity covered</sub>
 <br/><br/>
 </td>
 </tr>
@@ -308,10 +308,10 @@ agent-square/
 </td>
 <td width="33%" align="center">
 <br/>
-<h3>🌾</h3>
-<b>长尾就绪</b>
+<h3>📶</h3>
+<b>从简到繁</b>
 <br/>
-<sub>从 12345 热线到兰花园艺 —— 真实、具体、足够垂直</sub>
+<sub>从单点客服机器人到多智能体复杂编排 —— 每一层复杂度都有对应方案</sub>
 <br/><br/>
 </td>
 </tr>
