@@ -7,7 +7,7 @@
 
 # 🌐 Agent Square · Industry Collection
 
-### **337 agents. 10 sectors. Your daily digital workforce.**
+### **One year. 365 agents. Every day, a new digital employee.**
 
 <br/>
 
@@ -85,7 +85,7 @@ Each agent is a **self-contained `.md` file** with YAML frontmatter, bound APIs,
 | 11 | 🌾 **Agriculture** | 农牧 | **36** | Smart Farm · Digital Ranch · Agri-Futures · Swine Chain · Tea · Honey · Mushroom |
 | | **Total** | | **306** | |
 
-> 💡 **Sector 10 (General)** — the 31 horizontal / digital-employee agents (secretary, translator, HR, ESG, …) lives in the companion repo **[Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square)**. Together the two repos form the **337-agent Agent Square** collection.
+> 💡 **Sector 10 (General)** — the 31 horizontal / digital-employee agents (secretary, translator, HR, ESG, …) lives in the companion repo **[Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square)**. Together the two repos form the complete **365 Agents — one per day of the year**.
 
 <br/>
 
@@ -276,7 +276,7 @@ agent-square/
 
 # 🌐 Agent 广场 · 行业智能体集
 
-### **337 个智能体，10 大板块，你的日常数字工作团队。**
+### **一年 365 天，每天一个新数字员工。**
 
 </div>
 
@@ -342,7 +342,7 @@ agent-square/
 | 11 | 🌾 **农牧** | **36** | 智慧农场/数字牧场/茶叶/水产/林业/蜂蜜/中药材/食用菌 |
 | | **合计** | **306** | |
 
-> 💡 **板块 10（通用）** —— 31 个水平向数字员工（秘书、翻译、HR、ESG 等）发布在姐妹仓库 **[Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square)**。两仓合计 **337 个智能体**。
+> 💡 **板块 10（通用）** —— 31 个水平向数字员工（秘书、翻译、HR、ESG 等）发布在姐妹仓库 **[Ruidong-AI/agent-square](https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square)**。两仓合计 **365 个智能体，一年每天一个**。
 
 <br/>
 
