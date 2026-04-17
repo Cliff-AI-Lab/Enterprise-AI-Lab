@@ -412,6 +412,8 @@ agent-square/
 
 ### 🌟 Explore More · 探索更多
 
+<a href="https://iruidong.com/"><img src="https://img.shields.io/badge/🌐_iruidong.com-Official_Site-F59E0B?style=for-the-badge&labelColor=0D1117" alt="iRuidong Official Site" /></a>
+&nbsp;
 <a href="https://github.com/Cliff-AI-Lab/Ruidong-AI"><img src="https://img.shields.io/badge/RuidongAI-More_Projects-0A84FF?style=for-the-badge&logo=github&labelColor=0D1117" alt="RuidongAI" /></a>
 &nbsp;
 <a href="https://github.com/Cliff-AI-Lab/Ruidong-AI/tree/main/agent-square"><img src="https://img.shields.io/badge/Sister_Repo-General_Agents-7B61FF?style=for-the-badge&logo=github&labelColor=0D1117" alt="Sister Repo" /></a>
