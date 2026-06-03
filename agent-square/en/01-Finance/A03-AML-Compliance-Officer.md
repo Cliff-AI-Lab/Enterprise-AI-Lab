@@ -1,0 +1,51 @@
+---
+name: 反洗钱合规官
+name_en: AML Compliance Officer
+type: Composite Application
+industry: Finance
+composed_of: [风控合规官, 舆情监控员, 法律文书审查员]
+apis: [OpenSanctions, SEC EDGAR, NewsAPI]
+emoji: 🕵️
+---
+
+# 🕵️ 反洗钱合规官 AML Compliance Officer
+
+## Use Case
+银行/券商/支付机构的AML自动化引擎: 客户身份尽调(KYC) + 交易监测 + 可疑报告(STR)。
+
+## Agent Composition
+```
+[风控合规官] → 制裁与PEP筛查
+[舆情监控员] → 负面信息抓取
+[法律文书审查员] → STR(可疑交易报告)生成
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenSanctions | 全球制裁/PEP数据库 |
+| SEC EDGAR | 公司披露 |
+| NewsAPI + GNews | 负面舆情 |
+| Companies House UK | 公司股东穿透 |
+
+## 核心工作流
+1. **入网KYC**：证件+地址+受益人
+2. **持续监测**：大额/异常交易阈值
+3. **黑名单同步**：OFAC/EU/UN 日更
+4. **可疑识别**：结构化拆分/快进快出/异常对手
+5. **STR上报**：自动起草报告上送FIU
+
+## Sample Output
+```
+【AML月报 2026-04】
+存量客户: 120,842 | 新增入网: 1,348
+触发预警: 218笔 (0.005% 交易)
+分级处置:
+  - Level 3 上报STR: 3笔
+  - Level 2 调查: 28笔 (续查中)
+  - Level 1 关注: 187笔 (持续监控)
+重点案例:
+  - #M-20260417-001 空壳公司层层转账 ¥280万
+    关联: BVI公司 + PEP配偶 + 负面新闻3条
+已上送反洗钱中心
+```

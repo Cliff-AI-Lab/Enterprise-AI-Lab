@@ -1,0 +1,64 @@
+---
+name: 在线教育平台
+name_en: Online Education Platform
+type: Composite Application
+industry: Education
+composed_of: [课程设计师, 一对一AI家教, 电商运营专家, 会员增长官]
+source_refs: [Corporate Training Designer, Growth Hacker, Content Creator]
+apis: [OpenLibrary, YouTube Data, Shopify]
+emoji: 💻
+---
+
+# 💻 在线教育平台 Online Education Platform
+
+## Use Case
+K12/职业/兴趣在线教育SaaS平台: 内容+直播+AI辅导+交易+运营。
+
+## Agent Composition
+```
+[课程设计师] ← Corporate Training Designer
+[一对一AI家教] → 复用
+[Growth Hacker] ← marketing
+[Content Creator] ← marketing
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenLibrary | 教材参考 |
+| YouTube Data | 公开课引用 |
+| Shopify | 课程订单 |
+
+## 核心工作流
+1. **讲师招募**：入驻+培训
+2. **课程制作**：录播+直播
+3. **学员运营**：试听+转正
+4. **学情跟踪**：测评+报告
+5. **数据变现**：会员+增值
+
+## Sample Output
+```
+【某在线教育平台 年报】
+讲师: 3,200 | 课程 12,800
+付费学员: 48万 (年↑35%)
+GMV: ¥4.2亿
+客单价: ¥880 (平均2.3门)
+复购率: 42%
+热门品类:
+  - 职业技能 (编程/设计) 42%
+  - K12辅导 28%
+  - 兴趣(音乐/美术) 18%
+  - 语言 12%
+效果指标:
+  - 完课率 68%
+  - NPS 54
+  - 满意度 4.6/5
+AI应用:
+  - AI助教 月答疑 280万次
+  - AI批改作业 替代讲师30%时间
+  - 个性化推荐 转化+12%
+增长:
+  - 月活 620万
+  - 客户获客成本 ¥68
+  - LTV ¥1,800 (LTV/CAC 26倍)
+```

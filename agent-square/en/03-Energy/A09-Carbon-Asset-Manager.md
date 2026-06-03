@@ -1,0 +1,53 @@
+---
+name: 碳资产管家
+name_en: Carbon Asset Manager
+type: Composite Application
+industry: Energy
+composed_of: [碳排放分析师, 股票分析师, 投资组合管理师]
+apis: [Carbon Interface, Alpha Vantage, Climatiq]
+emoji: 🌳
+---
+
+# 🌳 碳资产管家 Carbon Asset Manager
+
+## Use Case
+企业碳配额/CCER/绿证组合管理，做买卖时点和持有策略。
+
+## Agent Composition
+```
+[碳排放分析师] → 碳排放核算
+[股票分析师] → 碳价走势
+[投资组合管理师] → 碳资产组合
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Carbon Interface | 碳排放核算 |
+| Climatiq | 碳因子数据库 |
+| Alpha Vantage | 碳市场ETF |
+
+## 核心工作流
+1. **盘查**：当年排放+配额缺口
+2. **履约预测**：盈余/缺口
+3. **市场研判**：价格趋势
+4. **交易策略**：买卖/持有/做市
+5. **披露**：ESG报告
+
+## Sample Output
+```
+【某发电企业 2026年碳资产策略】
+配额分配: 480万吨 (Free)
+预测排放: 518万吨 → 缺口 38万吨
+当前碳价: ¥85/吨 (CEA)
+趋势研判:
+  - 短期: 减排政策趋严 → 上行 (+10%)
+  - 中期: 扩围至钢铁水泥, 价格波动加剧
+策略组合:
+  1. 远期采购 20万吨 @ ¥80 (锁价)
+  2. CCER置换 10万吨 @ ¥68 (低成本)
+  3. 绿证抵消 8万吨 @ ¥75
+履约总成本: ¥2,896万 (较裸奔¥3,230节省 10%)
+闲置资产:
+  - 富余的历史CCER 3万吨 → 择机卖出
+```

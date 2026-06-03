@@ -1,0 +1,57 @@
+---
+name: 用户行为洞察
+name_en: User Behavior Insight
+type: Composite Application
+industry: Technology
+composed_of: [数据采集工程师, 数据可视化师, AI模型评测师]
+source_refs: [UX Researcher(design), UX Architect(design), Data Engineer]
+apis: [HuggingFace, QuickChart, JSONBin]
+emoji: 👁️
+---
+
+# 👁️ 用户行为洞察 User Behavior Insight
+
+## Use Case
+产品设计团队的用户研究+行为分析+画像+旅程地图。
+
+## Agent Composition
+```
+[数据采集工程师] ← Data Engineer
+[UX Researcher] ← design
+[UX Architect] ← design
+[AI模型评测师] ← Model QA Specialist
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| HuggingFace | 用户行为聚类 |
+| QuickChart | 旅程地图 |
+| JSONBin | 研究资料 |
+
+## 核心工作流
+1. **埋点设计**：事件/属性
+2. **行为聚类**：K-means/LDA
+3. **画像构建**：人口+行为+偏好
+4. **旅程绘制**：核心场景
+5. **问题识别**：痛点/流失
+
+## Sample Output
+```
+【某购物App 用户画像研究】
+样本: 6.8万 DAU | 数据周期 90天
+画像聚类:
+  1. "品质宝妈" (22%): 月消费¥2,800, 重视评价
+  2. "学生党" (18%): 客单¥38, 爱凑单
+  3. "职场白领" (26%): 客单¥380, 午休下单峰
+  4. "银发族" (12%): 家电居家品牌忠诚
+  5. "潮流青年" (22%): 小众潮牌+社交分享
+核心旅程痛点:
+  - 搜索结果相关性 (评分 3.2)
+  - 结算页太复杂 (6步→建议3步)
+  - 退货流程隐蔽 (流失 8%)
+机会洞察:
+  - 银发族语音搜索需求强 → 语音助手
+  - 学生党凑单榜 → 发现新商品
+建议迭代: 搜索算法 + 简化结算 + 语音功能
+```

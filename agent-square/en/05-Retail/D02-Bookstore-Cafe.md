@@ -1,0 +1,30 @@
+---
+name: 书店咖啡复合
+name_en: Bookstore Cafe
+type: Composite Application
+industry: Retail
+apis: [OpenLibrary, Shopify]
+emoji: ☕
+---
+
+# ☕ 书店咖啡复合
+
+## Use Case
+网红书店+咖啡厅(方所/茑屋)的多业态融合。
+
+## Sample Output
+```
+【某独立书店 年度】
+门店: 12家 | 日客流 3,200
+业态:
+  - 图书 35% (利薄)
+  - 咖啡餐饮 38%
+  - 文创周边 18%
+  - 活动课程 9%
+客单: ¥85
+活动:
+  - 作家签售 月4场
+  - 读书会 月8场
+  - 会员日收入倍增
+NPS: 78 (超高黏性)
+```

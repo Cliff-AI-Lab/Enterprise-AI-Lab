@@ -1,0 +1,64 @@
+---
+name: 品牌出海顾问
+name_en: Brand Overseas Expansion Advisor
+type: Composite Application
+industry: Retail
+composed_of: [社交电商运营, 跨境电商合规, 多语言翻译官, 消费者洞察专家]
+source_refs: [Cross-Border E-Commerce Specialist, TikTok Strategist, Language Translator]
+apis: [TikTok Display, RestCountries, NewsAPI, LibreTranslate]
+emoji: 🚀
+---
+
+# 🚀 品牌出海顾问 Brand Overseas Expansion Advisor
+
+## Use Case
+国货品牌出海东南亚/北美/欧洲/中东的市场选择+本地化+冷启动策略。
+
+## Agent Composition
+```
+[社交电商运营] ← TikTok Strategist / Instagram Curator
+[跨境电商合规] ← Cross-Border E-Commerce Specialist
+[多语言翻译官] ← Language Translator
+[消费者洞察专家] ← Trend Researcher
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| RestCountries | 市场基本信息 |
+| NewsAPI | 当地热点 |
+| LibreTranslate | 本地化翻译 |
+| TikTok Display | 海外短视频 |
+
+## 核心工作流
+1. **市场选择**：GDP+人口+电商渗透率
+2. **竞品分析**：本地Top10 Brand
+3. **本地化**：LOGO/SKU/定价
+4. **冷启动**：达人+广告
+5. **复盘迭代**：每季回顾
+
+## Sample Output
+```
+【某家居品牌 东南亚出海方案】
+目标市场: 印尼 (首选), 越南, 菲律宾
+选择理由:
+  - 印尼人口2.8亿, 电商增速25%+
+  - TikTok Shop印尼GMV居首
+  - 华人供应链成熟
+本地化:
+  - 产品: 小户型迷你款
+  - 价格: ¥89 (vs国内¥120)
+  - 语言: Bahasa + 英语
+冷启动 (首6个月):
+  - TikTok小店 + 50达人合作
+  - 本地仓备货 (避免37天漂洋)
+  - 斋月大促 (核心节点)
+预算: $350K 打法
+  - 广告 60%
+  - KOL 25%
+  - 仓储/物流 15%
+KPI:
+  - M3 GMV $50K / M6 $300K
+  - 复购 20%
+  - 本地认知度 10%
+```

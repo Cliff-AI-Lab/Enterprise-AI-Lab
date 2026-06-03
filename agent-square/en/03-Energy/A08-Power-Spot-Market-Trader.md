@@ -1,0 +1,54 @@
+---
+name: 电力现货交易员
+name_en: Power Spot Market Trader
+type: Composite Application
+industry: Energy
+composed_of: [电力负荷预测员, 新能源投研员, 投资组合管理师]
+apis: [EIA, OpenWeatherMap, Alpha Vantage]
+emoji: 📈
+---
+
+# 📈 电力现货交易员 Power Spot Market Trader
+
+## Use Case
+售电公司/发电企业/用户的电力现货市场投标+实时平衡。
+
+## Agent Composition
+```
+[电力负荷预测员] → 次日负荷
+[新能源投研员] → 新能源出力
+[投资组合管理师] → 多品种组合风险
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| EIA Hourly | 节点电价 |
+| OpenWeatherMap | 风光预测 |
+| Alpha Vantage | 能源期货 |
+
+## 核心工作流
+1. **次日申报**：96点预测+报价
+2. **实时平衡**：偏差修正
+3. **金融对冲**：期货/差价合约
+4. **结算复盘**：日结/月结
+5. **风险控制**：VaR限额
+
+## Sample Output
+```
+【4/18 售电公司日前申报】
+客户总负荷预测: 1,280 MWh
+申报策略:
+  - 自持合约覆盖: 800 MWh (基荷)
+  - 现货采购: 480 MWh
+出清结果:
+  - 平均中标价 $72/MWh
+  - 成本总计 $92,160
+  - 客户售价 $88/MWh → 毛利 $20,480
+实时偏差 (当日):
+  - 实际负荷 1,295 MWh (+1.2%)
+  - 偏差电量 15 MWh 购入 $84
+风险:
+  - 晚高峰预测偏低, 明日加强模型
+  - 月度累计盈利 $182K (符合预期)
+```

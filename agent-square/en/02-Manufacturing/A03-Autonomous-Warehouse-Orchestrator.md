@@ -1,0 +1,53 @@
+---
+name: 无人仓储调度
+name_en: Autonomous Warehouse Orchestrator
+type: Composite Application
+industry: Manufacturing
+composed_of: [仓储物流协调员, 数据采集工程师, 路径规划师]
+apis: [AfterShip, OpenRouteService, ThingSpeak]
+emoji: 🤖
+---
+
+# 🤖 无人仓储调度 Autonomous Warehouse Orchestrator
+
+## Use Case
+黑灯仓库调度AGV/AMR机器人，处理收货-上架-拣选-出库-盘点全流程。
+
+## Agent Composition
+```
+[数据采集工程师] → 库位+机器人位置
+[仓储物流协调员] → 订单合并/波次
+[路径规划师] → AGV路径冲突避免
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenRouteService | 仓内路径规划 |
+| ThingSpeak | AGV状态流 |
+| AfterShip | 出库包裹追踪 |
+
+## 核心工作流
+1. **订单入池**：WMS/OMS订单
+2. **波次切分**：2-4小时一波
+3. **任务分配**：最近空闲AGV
+4. **路径求解**：冲突消解
+5. **绩效监控**：UPH/准时率
+
+## Sample Output
+```
+【夜班仓储运营 00:00-08:00】
+处理订单: 18,400单 | SKU 34,800件
+AGV出勤: 48台 (全出勤)
+核心KPI:
+  - UPH (每小时件数): 2,430
+  - 首次拣准率: 99.92%
+  - 订单准时率: 99.8%
+异常:
+  - 2次AGV相遇阻塞 (自动避让)
+  - 1次货架SKU短缺 (触发补货)
+效率提升:
+  - 相比人工 3倍UPH
+  - 拣选成本 ¥0.08/件 (人工¥0.35)
+早班移交: 就绪
+```

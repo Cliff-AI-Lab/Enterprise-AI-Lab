@@ -1,0 +1,63 @@
+---
+name: 工业节水方案
+name_en: Industrial Water Saving
+type: Composite Application
+industry: Energy
+composed_of: [能效审计师, 环境监测员, 工艺优化师]
+source_refs: [Civil Engineer(specialized), Compliance Auditor]
+apis: [OpenAQ (water), OpenWeatherMap, EPA]
+emoji: 💧
+---
+
+# 💧 工业节水方案 Industrial Water Saving
+
+## Use Case
+化工/钢铁/造纸/纺织等高水耗行业的节水改造+循环利用+中水回用。
+
+## Agent Composition
+```
+[Civil Engineer] ← specialized
+[能效审计师] ← Compliance Auditor
+[环境监测员] ← Reality Checker
+[工艺优化师] ← Workflow Optimizer
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenAQ | 水质监测 |
+| EPA Envirofacts | 法规合规 |
+| OpenWeatherMap | 降水气候 |
+
+## 核心工作流
+1. **水平衡**：用水地图
+2. **节水点识别**：冷却/清洗/工艺
+3. **方案设计**：闭环/中水
+4. **投资测算**：回收期
+5. **监测验证**：年度审计
+
+## Sample Output
+```
+【某化工厂 节水诊断】
+现状:
+  - 年取水 680万吨 (自来水¥4.2/吨)
+  - 年水费 ¥2,860万
+  - 废水排放 420万吨
+节水方案:
+  1. 循环冷却水浓缩倍率 3→5
+     - 年节水 120万吨
+     - 投资 ¥380万 | 回收期 1.2年
+  2. 反渗透中水回用 → 工艺用水
+     - 年节水 180万吨
+     - 投资 ¥1,200万 | 回收期 2.8年
+  3. 雨水收集 + 洗地低质水源
+     - 年节水 30万吨
+  合计节水 330万吨/年 = 49%
+综合效益:
+  - 年节水费 ¥1,400万
+  - 排污费节省 ¥180万
+  - 投资 ¥2,100万 | 回收期 1.3年
+环境:
+  - 废水排放↓45%
+  - 有助区域水资源约束
+```

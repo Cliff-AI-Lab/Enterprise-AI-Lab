@@ -1,0 +1,55 @@
+---
+name: 冷链全链路
+name_en: Cold Chain Tracker
+type: Composite Application
+industry: Logistics
+composed_of: [包裹追踪员, 运力调度员, 质量检测员, 数据采集工程师]
+source_refs: [Evidence Collector, Supply Chain Strategist]
+apis: [AfterShip, ThingSpeak, OpenWeatherMap]
+emoji: ❄️
+---
+
+# ❄️ 冷链全链路 Cold Chain Tracker
+
+## Use Case
+生鲜/医药/疫苗全程温湿度监控+断链报警+合规存档。
+
+## Agent Composition
+```
+[数据采集工程师] → 温度传感器
+[包裹追踪员] ← Evidence Collector
+[运力调度员] ← Project Shepherd
+[质量检测员] → 断链处置
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| ThingSpeak | 温度数据流 |
+| AfterShip | 位置追踪 |
+| OpenWeatherMap | 外部温度 |
+
+## 核心工作流
+1. **标签绑定**：RFID/NB-IoT传感
+2. **全程监控**：5分钟上报
+3. **异常告警**：超阈值即时推送
+4. **应急处置**：路径内找冷库
+5. **合规存档**：GxP追溯
+
+## Sample Output
+```
+【疫苗冷链专线 运营月报】
+疫苗批次: 180批次 | 温度监测点位 2,400
+合规率: 99.92%
+本月异常:
+  - 6次超温警报 (时长<15min, 不影响效价)
+  - 2次断链 (一处网络, 一处电池)
+  - 0次失效批次
+温度曲线 (样例):
+  - 出库 2.8℃ → 全程 2-7℃ → 送达 3.1℃ ✅
+合规报告 (GDP):
+  - 自动生成每批次温度图
+  - 冷藏车GPS轨迹存档
+  - 双人复核签名电子化
+客户: 疾控中心满意度 100%
+```

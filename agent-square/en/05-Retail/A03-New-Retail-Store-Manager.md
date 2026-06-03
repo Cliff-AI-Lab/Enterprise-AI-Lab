@@ -1,0 +1,59 @@
+---
+name: 新零售门店运营
+name_en: New Retail Store Manager
+type: Composite Application
+industry: Retail
+composed_of: [电商运营专家, 仓储物流协调员, 客服智能助手]
+source_refs: [Private Domain Operator, Retail Customer Returns]
+apis: [Shopify, AfterShip, WeChat APIs]
+emoji: 🏪
+---
+
+# 🏪 新零售门店运营 New Retail Store Manager
+
+## Use Case
+线下门店+线上小程序+私域社群一体化运营, 盒马/屈臣氏模式。
+
+## Agent Composition
+```
+[电商运营专家] ← Private Domain Operator (marketing)
+[仓储物流协调员] → 门店库存+同城配送
+[客服智能助手] ← Customer Service
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Shopify / 自建 | 商城 |
+| AfterShip | 同城配送 |
+| WeChat Open | 小程序+企微 |
+
+## 核心工作流
+1. **会员中台**：线上线下统一
+2. **私域运营**：社群+朋友圈
+3. **门店库存**：上下同步
+4. **同城30分钟达**：骑手对接
+5. **O2O活动**：到店礼+线上券
+
+## Sample Output
+```
+【华东某生鲜连锁 月报】
+门店: 286家 | 会员 480万
+月GMV: ¥1.2亿
+  - 到店 55%
+  - 小程序 30%
+  - 社群接龙 12%
+  - 第三方 3%
+店效: 日均¥4万 (优秀店¥12万)
+会员复购: 月度 38%
+私域:
+  - 企微好友 82万
+  - 活跃社群 1,200个
+  - 日活发单 12%
+热门玩法:
+  - "明日8点拼团" 次日取货, 省运费
+  - 周三会员日 全场95折
+库存优化:
+  - 损耗率 1.8% (↓0.5pp)
+  - 同城爆款提前补货
+```

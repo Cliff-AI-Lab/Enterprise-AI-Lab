@@ -1,0 +1,56 @@
+---
+name: 供应链韧性评估
+name_en: Supply Chain Resilience Assessor
+type: Composite Application
+industry: Manufacturing
+composed_of: [供应链策略师, 舆情监控员, 政策研究员, 环境监测员]
+apis: [OpenCorporates, NewsAPI, Disease.sh, OpenWeatherMap]
+emoji: 🛡️
+---
+
+# 🛡️ 供应链韧性评估 Supply Chain Resilience Assessor
+
+## Use Case
+跨国企业CPO用，扫描多级供应商的地缘/气候/疫情/政治风险，输出韧性评分和替代预案。
+
+## Agent Composition
+```
+[供应链策略师] → 供应商图谱
+[舆情监控员] → 当地负面事件
+[政策研究员] → 出口管制/关税变化
+[环境监测员] → 气候风险
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenCorporates | 多级供应商 |
+| NewsAPI | 当地突发 |
+| Disease.sh | 传染病预警 |
+| OpenWeatherMap + 气候数据 | 极端天气 |
+
+## 核心工作流
+1. **供应商定位**：坐标+依赖度
+2. **风险扫描**：5类×实时
+3. **韧性打分**：0-100
+4. **替代预案**：自动匹配B/C供应商
+5. **预警推送**：阈值触发CEO
+
+## Sample Output
+```
+【供应链韧性季报 Q1-2026】
+一级供应商: 186家 | 覆盖国家: 28
+整体韧性评分: 72/100 (↓3 QoQ, 略退步)
+高风险TOP (5):
+  1. 乌克兰某线缆厂 - 战争 (评分35)
+     - 已切换至匈牙利备选 ✅
+  2. 台湾某晶圆厂 - 地缘紧张 (评分55)
+     - 库存备至6个月 | 马来西亚替代正在认证
+  3. 日本九州某电池厂 - 台风季 (评分62)
+  4. 印尼某金属 - 禁矿政策 (评分58)
+  5. 德州某MCU - 极端天气 (评分65)
+新增关注:
+  - 红海航运成本上涨30%
+  - 欧盟CBAM钢铝关税生效
+建议行动: 启动紧急双供应商项目 (针对1/2)
+```

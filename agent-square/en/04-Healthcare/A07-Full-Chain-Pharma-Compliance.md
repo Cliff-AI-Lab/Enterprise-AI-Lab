@@ -1,0 +1,56 @@
+---
+name: 全链路合规官
+name_en: Full-Chain Pharma Compliance
+type: Composite Application
+industry: Healthcare
+composed_of: [医疗合规审查员, 法律文书审查员, 风控合规官]
+source_refs: [Healthcare Marketing Compliance, Compliance Auditor]
+apis: [OpenFDA, OpenSanctions, SEC EDGAR]
+emoji: 🛡️
+---
+
+# 🛡️ 全链路合规官 Full-Chain Pharma Compliance
+
+## Use Case
+药企从研发、临床、生产、销售到药物警戒的全链合规监测。
+
+## Agent Composition
+```
+[医疗合规审查员] ← Healthcare Marketing Compliance
+[法律文书审查员] ← Legal Document Review
+[风控合规官] ← Compliance Auditor
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| OpenFDA | 警告信/标签 |
+| OpenSanctions | 供应商/员工筛查 |
+| SEC EDGAR | 公司披露 |
+
+## 核心工作流
+1. **研发合规**：GCP/ICH 规范
+2. **临床合规**：知情同意/方案偏离
+3. **生产合规**：GMP/批记录
+4. **销售合规**：Sunshine Act/反商贿
+5. **药物警戒**：ADR上报
+
+## Sample Output
+```
+【某药企全链合规月报】
+累计合规事件: 28件 | 严重: 0 | 中等: 3 | 轻微: 25
+重点:
+  1. 某CRA在G临床点批记录手写错误 → 培训
+  2. 某代表在会议上举办脱离适应症讨论 → 警告
+  3. 某供应商进制裁名单 → 已切换
+监管互动:
+  - FDA 无Form 483
+  - NMPA 飞检1次 通过
+  - CHMP 年度报告提交
+警戒:
+  - FAERS 新增12起潜在ADR, 已分析评估
+  - 公司PBRER按时提交
+关键指标:
+  - SOP合规率: 98.2% (目标≥97%)
+  - 报告及时率: 100%
+```

@@ -1,0 +1,46 @@
+---
+name: 核电运维
+name_en: Nuclear Plant O&M
+type: Composite Application
+industry: Energy
+apis: [ThingSpeak, OpenWeatherMap, IAEA Data]
+emoji: ☢️
+---
+
+# ☢️ 核电运维 Nuclear Plant O&M
+
+## Use Case
+核电机组的严格安全运维: 设备预测维护+辐射监测+应急演练。
+
+## Core Capabilities
+- 关键设备可靠性
+- 辐射监测
+- 退役计划
+- 应急响应
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| ThingSpeak | 工艺/辐射数据 |
+| OpenWeatherMap | 极端气候 |
+| IAEA Data (公开) | 核数据参考 |
+
+## Sample Output
+```
+【某核电站 月度】
+机组: 2台 1000MW PWR
+运行:
+  - 负荷因子 92%
+  - 未计划停堆 0次 (连续365天)
+  - 发电量 14.5亿kWh
+设备健康:
+  - 关键泵/阀 健康度 98%
+  - 热交换器 监测点 1,400
+  - 故障预测准确率 89%
+辐射监测:
+  - 周界剂量 <0.1μSv/h (远低监管)
+  - 工作人员人均 0.8mSv/年
+应急:
+  - 演练 2次/季 (桌面+全场)
+  - 与政府应急对接畅通
+```

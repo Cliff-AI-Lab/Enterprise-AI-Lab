@@ -1,0 +1,35 @@
+---
+name: 食品加工数字化
+name_en: Food Processing Digital
+type: Composite Application
+industry: Agriculture
+apis: [OpenFoodFacts, ThingSpeak, HuggingFace]
+emoji: 🏭
+---
+
+# 🏭 食品加工数字化
+
+## Use Case
+中央厨房/速冻食品/调味品厂的HACCP+追溯+品控数字化。
+
+## Core Capabilities
+- HACCP关键控制点
+- 批次追溯
+- AI视觉品检
+- 配方管理
+
+## Sample Output
+```
+【某速冻食品厂 年度】
+年产: 18万吨 | SKU 420
+HACCP:
+  - 关键点6个 全记录
+  - 偏离事件 12次 (全部处置)
+  - 第三方审核: BRC AA级
+追溯:
+  - 一物一码
+  - 召回能力: 2小时锁定问题批次
+品控:
+  - AI视觉检 异物率 0.001%
+  - 微生物检验 合格率 99.98%
+```

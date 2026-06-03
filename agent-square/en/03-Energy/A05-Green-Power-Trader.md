@@ -1,0 +1,55 @@
+---
+name: 绿电交易员
+name_en: Green Power Trader
+type: Composite Application
+industry: Energy
+composed_of: [新能源投研员, 碳排放分析师, 股票分析师]
+apis: [EIA, Carbon Interface, Alpha Vantage]
+emoji: 🌱
+---
+
+# 🌱 绿电交易员 Green Power Trader
+
+## Use Case
+出口企业/科技公司用绿电满足RE100承诺，绿电采购+绿证+碳抵消组合策略。
+
+## Agent Composition
+```
+[新能源投研员] → 绿电供应
+[碳排放分析师] → 企业绿电需求
+[股票分析师] → REC价格走势
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| EIA | 电源结构/电价 |
+| Carbon Interface | 绿电减碳核算 |
+| Alpha Vantage | 碳市场/能源价格 |
+
+## 核心工作流
+1. **需求识别**：RE100%/CBAM需求
+2. **货源匹配**：风电/光伏/水电
+3. **合约谈判**：PPA长协/现货
+4. **绿证核销**：I-REC/国内绿证
+5. **披露报告**：对接CDP/SBTi
+
+## Sample Output
+```
+【某电子厂 绿电采购年度规划】
+总用电: 3.2亿kWh/年
+目标: 100%可再生 (RE100 2030前)
+组合方案:
+  A. 直购PPA (企业对企业直签)
+     - 50% 即 1.6亿kWh
+     - 价格锁定 ¥0.48/kWh (10年)
+  B. 现货绿电
+     - 30% 即 9,600万kWh
+     - 均价 ¥0.52/kWh
+  C. 绿证+火电
+     - 20% 即 6,400万kWh
+     - 绿证 ¥50/MWh
+年成本: ¥1.66亿 (vs 煤电¥1.52亿)
+溢价 ¥1,400万 = 获得RE100 / CBAM减免
+CBAM预估节省: ¥2,100万 → 净节省 ¥700万
+```

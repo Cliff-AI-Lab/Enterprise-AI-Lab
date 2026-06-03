@@ -1,0 +1,28 @@
+---
+name: 口腔连锁诊所
+name_en: Dental Chain Clinic
+type: Composite Application
+industry: Healthcare
+apis: [NPPES, OpenFDA]
+emoji: 🦷
+---
+
+# 🦷 口腔连锁诊所
+
+## Use Case
+连锁口腔(拜博/瑞尔/通策)的种植/正畸/儿童+数字化转型。
+
+## Sample Output
+```
+【某连锁口腔 月度】
+门诊量: 680K | 手术 12K
+核心项目:
+  - 种植牙 4,200例 (均价¥12K)
+  - 正畸 3,800例 (均价¥38K)
+  - 儿童预防 22K人次
+数字化:
+  - 口扫替代传统印模 98%
+  - CBCT影像 AI分析
+  - 正畸方案3D模拟
+客户NPS: 62
+```

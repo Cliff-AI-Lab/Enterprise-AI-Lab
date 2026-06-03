@@ -1,0 +1,57 @@
+---
+name: 农产品溯源
+name_en: Farm-to-Table Traceability
+type: Composite Application
+industry: Agriculture
+composed_of: [质量追溯专家, 农作物监测员, 关务报关员]
+source_refs: [Supply Chain Strategist, Evidence Collector]
+apis: [QRServer, OpenFoodFacts, AfterShip]
+emoji: 🔖
+---
+
+# 🔖 农产品溯源 Farm-to-Table Traceability
+
+## Use Case
+生鲜品牌/有机认证品"从田到桌"的一物一码溯源。
+
+## Agent Composition
+```
+[质量追溯专家] ← Quality Traceability
+[农作物监测员] ← Environmental Monitor
+[关务报关员] → 跨境溯源链
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| QRServer | 溯源二维码 |
+| OpenFoodFacts | 食品数据库 |
+| AfterShip | 物流链路 |
+
+## 核心工作流
+1. **产地登记**：GPS+照片
+2. **生产记录**：施肥/用药/采摘
+3. **加工包装**：批次/日期
+4. **物流**：冷链/运输
+5. **消费扫码**：全链可查
+
+## Sample Output
+```
+【某有机蔬菜 月度溯源报告】
+SKU数: 86种 | 批次 2,400
+溯源链:
+  - 38个合作基地 → 3个加工中心 → 220家门店
+一物一码:
+  - 包装贴码 480万份
+  - 消费者扫码率 32%
+消费者可见:
+  - 种植基地实景照片
+  - 播种/采收日期
+  - 农药/肥料使用记录 (0使用)
+  - 检测报告
+  - 冷链温度曲线
+异常预警:
+  - 1批青菜超标被冻结 (未流入市场)
+  - 2家合作社违规被整改
+品牌溢价: 消费者愿为溯源付费 +28%
+```

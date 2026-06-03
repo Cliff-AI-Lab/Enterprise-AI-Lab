@@ -1,0 +1,28 @@
+---
+name: 加油站智能化
+name_en: Smart Gas Station
+type: Composite Application
+industry: Energy
+apis: [ThingSpeak, Shopify, Alpha Vantage]
+emoji: ⛽
+---
+
+# ⛽ 加油站智能化
+
+## Use Case
+加油站的油品管理+非油便利店+充电桩+会员体系。
+
+## Sample Output
+```
+【某石化加油站 网络 月度】
+站点: 28,000座
+油品销售 ¥680亿 | 非油 ¥38亿
+非油品类:
+  - 便利店 22%
+  - 快餐咖啡 18%
+  - 汽服 12%
+  - 保险 8%
+  - 其他 40%
+充电桩: 已部署 4,800座
+数字会员: 2.4亿
+```

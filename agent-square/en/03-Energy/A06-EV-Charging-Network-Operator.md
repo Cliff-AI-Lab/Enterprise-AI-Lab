@@ -1,0 +1,58 @@
+---
+name: 充电网络运营
+name_en: EV Charging Network Operator
+type: Composite Application
+industry: Energy
+composed_of: [充电桩规划师, 电力负荷预测员, 路径规划师]
+apis: [Open Charge Map, EIA, OpenRouteService]
+emoji: 🔌
+---
+
+# 🔌 充电网络运营 EV Charging Network Operator
+
+## Use Case
+充电桩网络运营商的选址、定价、维护、用户运营一体化。
+
+## Agent Composition
+```
+[充电桩规划师] → 选址扩容
+[电力负荷预测员] → 峰谷定价
+[路径规划师] → 用户导航
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| Open Charge Map | 站点POI |
+| EIA | 实时电价 |
+| OpenRouteService | 导航集成 |
+
+## 核心工作流
+1. **站点选址**：车流+电容+租金
+2. **动态定价**：峰谷+空驶率
+3. **运维调度**：故障+清洁
+4. **用户运营**：会员+套餐
+5. **盈利分析**：站级P&L
+
+## Sample Output
+```
+【充电网络Q1运营报告】
+站点: 286个 | 枪数: 1,820
+累计用户: 28万 | 月活 12万
+核心KPI:
+  - 枪时利用率: 42% (目标40% ✅)
+  - 平均客单 ¥38
+  - 月GMV ¥1,380万
+收入结构:
+  - 电费差价: 72%
+  - 服务费: 18%
+  - 会员费: 6%
+  - 广告+周边: 4%
+Top3 盈利站:
+  1. 金桥P+R站 月毛利 ¥18万
+  2. 龙阳路 ¥15万
+  3. 张江地铁口 ¥14万
+本季调整:
+  - 下架3个长期利用率<15%的站点
+  - 新建5站 (基于热力图)
+```

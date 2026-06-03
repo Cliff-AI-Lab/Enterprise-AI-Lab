@@ -1,0 +1,37 @@
+---
+name: MOOC平台
+name_en: MOOC Platform
+type: Composite Application
+industry: Education
+apis: [YouTube Data, OpenLibrary, HuggingFace]
+emoji: 🌐
+---
+
+# 🌐 MOOC平台
+
+## Use Case
+大规模开放在线课程: 高校教师+学生+企业培训三方生态。
+
+## Core Capabilities
+- 课程开发
+- 学分互认
+- 企业定制
+- 证书
+
+## Sample Output
+```
+【某MOOC平台 年报】
+注册学员: 8,200万 | 年活 2,800万
+课程: 28,000门 (来自680所高校)
+完课率: 12% (行业均)
+证书:
+  - 发放证书 380万
+  - 企业认证 120家
+营收:
+  - 证书费 ¥3.2亿
+  - 企业定制 ¥1.8亿
+  - 学分课程 ¥0.8亿
+国际:
+  - 英文课程 3,200门
+  - 海外学员 18%
+```

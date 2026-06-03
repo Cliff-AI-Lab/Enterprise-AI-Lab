@@ -1,0 +1,66 @@
+---
+name: 家族办公室
+name_en: Family Office Manager
+type: Composite Application
+industry: Finance
+composed_of: [投资组合管理师, 税务筹划师, 私募FOF管家, 法律文书审查员]
+source_refs: [Chief of Staff(specialized), Tax Strategist, Investment Researcher]
+apis: [SEC EDGAR, Alpha Vantage, CoinGecko, OpenSanctions]
+emoji: 👑
+---
+
+# 👑 家族办公室 Family Office Manager
+
+## Use Case
+超高净值家族(UHNW)的全球资产配置+税务+传承+家族治理。
+
+## Agent Composition
+```
+[Chief of Staff] ← specialized
+[投资组合管理师] ← Portfolio Manager
+[税务筹划师] ← Tax Strategist
+[法律文书审查员] ← Legal Document Review
+```
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| SEC EDGAR | 上市公司持股 |
+| Alpha Vantage | 全球市场 |
+| CoinGecko | 加密资产 |
+| OpenSanctions | CRS/合规 |
+
+## 核心工作流
+1. **资产盘点**：多国多币种
+2. **配置策略**：8+大类
+3. **税务筹划**：CRS/信托
+4. **慈善+ESG**：影响力投资
+5. **家族治理**：二代/三代培养
+
+## Sample Output
+```
+【某家族办公室 季度报告】
+管理资产: $480M
+配置 (多策略):
+  - 股权(含未上市) 35%
+  - 固定收益 22%
+  - 另类投资(PE/VC/HF) 18%
+  - 房地产 12%
+  - 艺术品+收藏 5%
+  - 现金+货币 5%
+  - 数字资产 3%
+地理:
+  - 美国 45%
+  - 欧洲 22%
+  - 亚太 28%
+  - 其他 5%
+架构:
+  - 离岸信托(BVI) + 新加坡资管公司
+  - CRS合规 三级申报
+本季:
+  - 增持AI/半导体主题 +$18M
+  - 减持科技股部分获利
+  - 慈善捐赠 $2M (教育+医疗)
+  - 二代子女接班培训启动
+下季重点: 全球家族办公室年会 + ESG投资政策
+```

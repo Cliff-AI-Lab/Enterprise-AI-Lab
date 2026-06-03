@@ -1,0 +1,46 @@
+---
+name: 化工工艺优化
+name_en: Chemical Process Optimization
+type: Composite Application
+industry: Manufacturing
+apis: [ThingSpeak, EPA Envirofacts, HuggingFace]
+emoji: 🧪
+---
+
+# 🧪 化工工艺优化 Chemical Process Optimization
+
+## Use Case
+石化/煤化工/精细化工的工艺参数寻优+能耗降低+安全预警。
+
+## Core Capabilities
+- DCS数据建模
+- APC先进过程控制
+- 能耗预测与优化
+- 安全预警
+
+## Bound APIs
+| API | Purpose |
+|-----|------|
+| ThingSpeak | 实时工艺参数 |
+| EPA | 排放合规 |
+| HuggingFace | ML模型 |
+
+## Sample Output
+```
+【某乙烯装置 月度】
+产量: 80万吨/年 (满产)
+能耗:
+  - 能耗指数 580 kgoe/吨 (↓3%)
+  - 节约燃料¥480万/月
+关键指标:
+  - 裂解炉COT优化: 平均+3℃
+  - 丙烯选择性↑0.8pp
+APC投用率: 96%
+安全:
+  - 0起重大事故
+  - 预警5次 (已处置)
+  - 设备失效预测 准确率 84%
+环保:
+  - VOCs排放 <规定30%
+  - 污水COD达标
+```

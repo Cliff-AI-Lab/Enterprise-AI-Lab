@@ -1,0 +1,34 @@
+---
+name: 农业保险科技
+name_en: Agri InsurTech
+type: Composite Application
+industry: Agriculture
+apis: [Agro API, OpenWeatherMap, NASA EONET]
+emoji: 🛡️
+---
+
+# 🛡️ 农业保险科技
+
+## Use Case
+政策农险+商业指数险的数字化承保+理赔。
+
+## Core Capabilities
+- 遥感核保
+- 指数理赔
+- 农户画像
+- 反骗保
+
+## Sample Output
+```
+【农险平台 年报】
+承保面积: 2,800万亩
+保费: ¥8.4亿 | 赔付 ¥6.8亿
+险种:
+  - 政策险 (粮棉油) 75%
+  - 气象指数险 15%
+  - 价格险 10%
+科技指标:
+  - 遥感识别面积准确率 96%
+  - 指数险"不核赔" 72小时赔付
+  - 骗保拦截 1,280起 ¥4,200万
+```
