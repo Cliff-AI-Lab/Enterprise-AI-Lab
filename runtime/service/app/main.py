@@ -46,7 +46,9 @@ _STATIC = Path(__file__).resolve().parent / "static"
 
 @app.get("/")
 def index() -> FileResponse:
-    return FileResponse(_STATIC / "index.html")
+    # 禁缓存:前端迭代频繁,避免浏览器拿旧页面
+    return FileResponse(_STATIC / "index.html",
+                        headers={"Cache-Control": "no-store, no-cache, must-revalidate", "Pragma": "no-cache"})
 
 
 @app.get("/health")
@@ -141,9 +143,28 @@ async def create_expert(req: Request) -> dict:
         raise HTTPException(400, "name / domain / persona 必填")
     e = store.create_expert(name=b["name"], domain=b["domain"], persona=b["persona"],
                             specialty=b.get("specialty", ""), skills=b.get("skills") or [],
-                            model=b.get("model", ""))
+                            model=b.get("model", ""), emoji=b.get("emoji", ""),
+                            color=b.get("color", ""), vibe=b.get("vibe", ""))
     store.log("expert.create", e["id"], e["name"])
     return e
+
+
+@app.post("/experts/preview_prompt")
+async def preview_prompt(req: Request) -> dict:
+    """组装并返回专家最终送入模型的 system prompt(人设 + 技能指引 + 知识),让用户看清提示词。"""
+    from .skills import skill_guidance
+    from .knowledge import knowledge_context
+    b = await req.json()
+    persona = b.get("persona", "")
+    sk = skill_guidance(b.get("skills") or [])
+    kn = knowledge_context(b["expert_id"], b.get("topic", "示例议题")) if b.get("expert_id") else ""
+    parts = [persona]
+    if sk:
+        parts.append(sk)
+    if kn:
+        parts.append(kn)
+    return {"prompt": "\n\n".join(p for p in parts if p),
+            "has_skills": bool(sk), "has_knowledge": bool(kn)}
 
 
 @app.put("/experts/{eid}")
@@ -278,7 +299,8 @@ async def expert_from_knowledge(req: Request) -> dict:
     )
     persona = persona or f"你是{domain}领域专家{name},结论先行、只谈对决策有影响的因素。"
     e = store.create_expert(name=name, domain=domain, persona=persona,
-                            specialty=b.get("specialty", ""), knowledge_ids=doc_ids, source="from_knowledge")
+                            specialty=b.get("specialty", ""), knowledge_ids=doc_ids, source="from_knowledge",
+                            color=b.get("color", ""), vibe=b.get("vibe", "业务沉淀"))
     store.log("expert.from_knowledge", e["id"], name)
     return {"ok": True, "expert": e}
 

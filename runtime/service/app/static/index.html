@@ -78,6 +78,29 @@
   .modal-bg { position: fixed; inset: 0; background: rgba(43,42,38,.4); display:none; align-items:center; justify-content:center; z-index: 50; }
   .modal-bg.show { display:flex; } .modal { background: var(--ivory); border-radius: 14px; padding: 20px; width: 560px; max-width: 92vw; max-height: 88vh; overflow:auto; box-shadow: var(--shadow); }
   .modal h3 { margin: 0 0 14px; } .docitem { display:flex; justify-content: space-between; gap:8px; padding:7px 10px; border:1px solid var(--line); border-radius:8px; background: var(--card); margin-bottom:6px; font-size: 13px; }
+  /* avatars */
+  .av { width:40px; height:40px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:800; font-size:16px; flex:0 0 auto; box-shadow:0 4px 12px rgba(43,42,38,.16);
+    border:2px solid rgba(255,255,255,.85); }
+  .av.sm{ width:30px; height:30px; font-size:13px; } .av.lg{ width:60px; height:60px; font-size:24px; }
+  .av.host{ background:linear-gradient(150deg,#b5562a,#8a3f1e)!important; }
+  /* chat-style turn */
+  .msg{ display:flex; gap:10px; align-items:flex-start; margin:13px 0; }
+  .msg .bub{ background:var(--card); border:1px solid var(--line); border-radius:4px 16px 16px 16px;
+    padding:10px 14px; box-shadow:var(--shadow); flex:1; min-width:0; }
+  .msg .who{ font-weight:700; font-size:13.5px; display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+  .msg .who .dm{ color:var(--muted); font-weight:400; font-size:12px; }
+  .msg .who .mdl{ font-size:10.5px; background:var(--accent-soft); color:var(--accent); padding:1px 7px; border-radius:999px; font-weight:600; }
+  .msg .who .fu{ font-size:11px; color:var(--accent); } .msg .tx{ margin-top:4px; white-space:pre-wrap; line-height:1.62; }
+  .msg.host .bub{ border-color:#ecd9cc; background:#fdf7f2; } .msg.host .who{ color:var(--accent); }
+  .msg.human{ flex-direction:row-reverse; } .msg.human .bub{ background:#eef3e8; border-color:#dbe6cf; border-radius:16px 4px 16px 16px; }
+  .msg.human .who{ color:var(--ok); justify-content:flex-end; }
+  /* color swatches */
+  .swatches{ display:flex; gap:8px; flex-wrap:wrap; } .sw{ width:26px; height:26px; border-radius:50%; cursor:pointer; border:3px solid transparent; }
+  .sw.on{ border-color:var(--ink); }
+  .avatar-edit{ display:flex; gap:14px; align-items:center; }
+  .promptbox{ background:#faf8f2; border:1px solid var(--line); border-radius:10px; padding:12px; font-size:12.5px; white-space:pre-wrap; max-height:200px; overflow:auto; color:var(--muted); line-height:1.6; }
+  .mode-card:hover{ border-color:var(--accent); transform:translateY(-2px); transition:.12s; }
 </style>
 </head>
 <body>
@@ -249,6 +272,14 @@ const el = (t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=
 const esc = s => String(s ?? "").replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
 const li = a => (a||[]).map(x=>`<li>${esc(x)}</li>`).join("");
 const api = async (u,opt)=>{const r=await fetch(u,opt);const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||d.error||("HTTP "+r.status));return d;};
+const PALETTE=["#b5562a","#2f6f5e","#3a6b7a","#7c5cff","#a23b2e","#c2410c","#4f7a4f","#8a5a2b","#5b6b8c","#9a651b"];
+function hashColor(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return PALETTE[h%PALETTE.length];}
+function initials(name){const n=String(name||"").replace(/^.*·/,"")||name||"?";return n.slice(0,1);}
+// 专家头像:纯色圆形 + 名字首字(不用 emoji);颜色取配置色或按名hash
+function avatar(e,cls=""){const color=(e&&e.color)||hashColor(e&&(e.name||e.id)||"x");
+  return `<span class="av ${cls}" style="background:${color}">${esc(initials(e&&e.name))}</span>`;}
+function hostAvatar(cls=""){return `<span class="av host ${cls}">主</span>`;}
+const EXPERT_BY_ID={};
 
 /* ---------- nav / 视图切换 ---------- */
 function switchView(name){
@@ -278,10 +309,11 @@ async function openMode(m){
   $("#mExpLabel").textContent = m==="polish" ? "参与专家(第 1 位勾选 = 创作者,其余 = 评审)" : "参与专家(至少 2 位)";
   $("#mStream").innerHTML=""; switchView("modes");
   const [ex,md]=await Promise.all([api("/experts?active_only=true&page_size=200"),api("/models")]);
+  (ex.experts||[]).forEach(e=>EXPERT_BY_ID[e.id]=e);
   const box=$("#mExperts"); box.innerHTML="";
   (ex.experts||[]).forEach((e,i)=>{
-    const lab=el("label","exp"+(i<3?" sel":""));
-    lab.innerHTML=`<input type="checkbox" value="${e.id}" ${i<3?"checked":""}>
+    const lab=el("label","exp"+(i<3?" sel":"")); lab.style.alignItems="center";
+    lab.innerHTML=`<input type="checkbox" value="${e.id}" ${i<3?"checked":""}>${avatar(e,"sm")}
       <span><span class="nm">${esc(e.name)}</span> · <span class="dm">${esc(e.domain)}</span>
       <div class="dm">${e.model?esc(e.model):"跟随会议模型"}${(e.skills||[]).length?` · 技能${e.skills.length}`:""}</div></span>`;
     const cb=lab.querySelector("input");
@@ -314,12 +346,13 @@ let EXPERTS=[]; let topicBlocks={};
 async function boot(){
   const [ex,md]=await Promise.all([api("/experts?active_only=true&page_size=200"),api("/models")]);
   EXPERTS=ex.experts||[];
+  EXPERTS.forEach(e=>EXPERT_BY_ID[e.id]=e);
   const box=$("#experts"); box.innerHTML="";
   EXPERTS.forEach(e=>{
-    const lab=el("label","exp sel");
-    lab.innerHTML=`<input type="checkbox" value="${e.id}" checked>
+    const lab=el("label","exp sel"); lab.style.alignItems="center";
+    lab.innerHTML=`<input type="checkbox" value="${e.id}" checked>${avatar(e,"sm")}
       <span><span class="nm">${esc(e.name)}</span> · <span class="dm">${esc(e.domain)}</span>
-      <div class="dm">${esc(e.specialty||"")}</div></span>`;
+      <div class="dm">${esc(e.vibe||e.specialty||"")}</div></span>`;
     const cb=lab.querySelector("input");
     cb.addEventListener("change",()=>lab.classList.toggle("sel",cb.checked));
     box.appendChild(lab);
@@ -335,11 +368,13 @@ function handle(ev,stream){
     case "meeting.started":{const MN={relay:"接龙协作",brainstorm:"头脑风暴",polish:"打磨工坊"};const b=el("div","block");b.innerHTML=`<div class="tag">${MN[ev.mode]?MN[ev.mode]+" 开始":"会议开始"}</div><div><b>${esc(ev.topic)}</b></div><div class="meta" style="margin-top:6px">参与:${ev.experts.map(e=>esc(e.name)).join(" · ")}</div>`;stream.appendChild(b);break;}
     case "agenda":{const b=el("div","block agenda");b.innerHTML=`<div class="tag">议程</div><ol>${li(ev.items)}</ol>`;stream.appendChild(b);break;}
     case "topic.started":{const b=el("div","block");b.innerHTML=`<div class="topic-head"><span class="ix">${ev.index+1}</span>${esc(ev.title)}</div>`;stream.appendChild(b);topicBlocks[ev.index]=b;break;}
-    case "turn":{const b=topicBlocks[ev.topic_index]||stream;const fu=ev.phase==="followup";const t=el("div","turn"+(fu?" fu":""));
-      t.innerHTML=`<div class="who">${esc(ev.expert_name)}<span class="dm">${esc(ev.domain)}</span>${fu?'<span class="fu-tag">· 追问回应</span>':''}</div><div class="tx">${esc(ev.text)}</div>`;b.appendChild(t);break;}
+    case "turn":{const b=topicBlocks[ev.topic_index]||stream;const fu=ev.phase==="followup";
+      const e=EXPERT_BY_ID[ev.expert_id]||{name:ev.expert_name};
+      const t=el("div","msg");
+      t.innerHTML=`${avatar(e)}<div class="bub"><div class="who">${esc(ev.expert_name)}<span class="dm">${esc(ev.domain)}</span>${ev.model?`<span class="mdl">${esc(ev.model)}</span>`:""}${fu?'<span class="fu">· 追问回应</span>':''}</div><div class="tx">${esc(ev.text)}</div></div>`;b.appendChild(t);break;}
     case "moderator.turn":{const b=(ev.topic_index!=null&&topicBlocks[ev.topic_index])||stream;
-      const t=el("div","turn");t.style.borderLeftColor="var(--accent)";
-      t.innerHTML=`<div class="who" style="color:var(--accent)">主持人<span class="dm">${ev.phase==="opening"?"开场":"组织发言"}</span></div><div class="tx">${esc(ev.text)}</div>${ev.order&&ev.order.length?`<div class="meta" style="margin-top:4px">发言顺序:${ev.order.map(esc).join(" → ")}</div>`:""}`;
+      const t=el("div","msg host");
+      t.innerHTML=`${hostAvatar()}<div class="bub"><div class="who">主持人<span class="dm">${ev.phase==="opening"?"开场":"组织发言"}</span></div><div class="tx">${esc(ev.text)}</div>${ev.order&&ev.order.length?`<div class="meta" style="margin-top:6px">发言顺序:${ev.order.map(esc).join(" → ")}</div>`:""}</div>`;
       b.appendChild(t);break;}
     case "conflict":{const b=topicBlocks[ev.topic_index]||stream;const c=el("div","conflict");
       c.innerHTML=`<div class="tag">主持人 · 检测到分歧,发起追问</div><div>${esc(ev.summary)}</div><div class="q">追问:${esc(ev.question)}</div>${ev.involved&&ev.involved.length?`<div class="meta" style="margin-top:4px">请回应:${ev.involved.map(esc).join("、")}</div>`:""}`;b.appendChild(c);break;}
@@ -351,7 +386,7 @@ function handle(ev,stream){
     case "meeting.finished":{const b=el("div","block");b.innerHTML=`<span class="pill">会议结束</span>`+(CUR_MID?` <button class="mini ghost" onclick="exportMeeting('${CUR_MID}','md')">导出 MD</button> <button class="mini ghost" onclick="exportMeeting('${CUR_MID}','docx')">导出 Word</button> <button class="mini ghost" onclick="exportMeeting('${CUR_MID}','pdf')">导出 PDF</button>`:"");stream.appendChild(b);break;}
     case "topic.done":{const b=el("div","block");b.innerHTML=`<span class="meta">议题 ${ev.index+1} 讨论完毕${ev.remaining>0?`,剩余 ${ev.remaining} 个`:",可推进生成结论"}</span>`;stream.appendChild(b);break;}
     case "intervention":{const b=el("div","block");b.style.borderLeft="3px solid var(--accent)";b.innerHTML=`<span class="meta">主持人指引</span><div>${esc(ev.text)}</div>`;stream.appendChild(b);break;}
-    case "human.turn":{const t=el("div","turn");t.style.borderLeftColor="var(--ok)";t.innerHTML=`<div class="who" style="color:var(--ok)">${esc(ev.name||"我")}<span class="dm">参会者</span></div><div class="tx">${esc(ev.text)}</div>`;stream.appendChild(t);break;}
+    case "human.turn":{const t=el("div","msg human");t.innerHTML=`<span class="av sm" style="background:var(--ok)">我</span><div class="bub"><div class="who">${esc(ev.name||"我")}<span class="dm">参会者</span></div><div class="tx">${esc(ev.text)}</div></div>`;stream.appendChild(t);break;}
     case "error":{const b=el("div","err");b.textContent="出错:"+(ev.error||"未知错误");stream.appendChild(b);break;}
   }
   window.scrollTo(0,document.body.scrollHeight);
@@ -480,6 +515,7 @@ let ALL_EXPERTS=[];
 async function loadExperts(){
   const d=await api("/experts?page_size=200");
   ALL_EXPERTS=d.experts||[];
+  ALL_EXPERTS.forEach(e=>EXPERT_BY_ID[e.id]=e);
   const df=$("#domainFilter"); const cur=df.value;
   df.innerHTML='<option value="">全部</option>'+(d.domains||[]).map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join("");
   df.value=cur;
@@ -491,9 +527,10 @@ function renderExperts(){
   ALL_EXPERTS.filter(e=>!f||e.domain===f).forEach(e=>{
     const c=el("div","ecard"+(e.active?"":" off"));
     const kn=(e.knowledge_ids||[]).length;
-    c.innerHTML=`<div class="hd"><div><span class="nm">${esc(e.name)}</span>
-      <div class="meta">${esc(e.domain)} · ${esc(e.specialty||"")}</div></div>
-      <div style="text-align:right">${e.kind==="external"?'<span class="badge ext">外部</span>':`<span class="badge">${esc(e.source||"")}</span>`}
+    c.innerHTML=`<div class="hd"><div style="display:flex;gap:11px;align-items:center;min-width:0">${avatar(e)}
+      <div style="min-width:0"><span class="nm">${esc(e.name)}</span>
+      <div class="meta">${esc(e.domain)}${e.vibe?` · ${esc(e.vibe)}`:""}</div></div></div>
+      <div style="text-align:right;flex:0 0 auto">${e.kind==="external"?'<span class="badge ext">外部</span>':`<span class="badge">${esc(e.source||"")}</span>`}
       ${kn?`<span class="badge kn">知识 ${kn}</span>`:""}
       ${(e.skills||[]).length?`<span class="badge">技能 ${(e.skills||[]).length}</span>`:""}
       ${e.model?`<span class="badge ext">${esc(e.model)}</span>`:""}</div></div>
@@ -526,17 +563,43 @@ async function editExpert(e){
   const skillBoxes=(sk.skills||[]).map(s=>`<label class="exp ${ (e?.skills||[]).includes(s.id)?"sel":"" }" style="margin:0">
       <input type="checkbox" value="${s.id}" ${(e?.skills||[]).includes(s.id)?"checked":""}>
       <span><span class="nm">${esc(s.name)}</span><div class="dm">${esc(s.desc)}</div></span></label>`).join("");
-  openModal(`<h3>${isNew?"新建专家":"编辑专家"}</h3>
-    <div class="field"><label>名称</label><input type="text" id="m_name" value="${esc(e?.name||"")}"></div>
-    <div class="row"><div><label>领域</label><input type="text" id="m_domain" value="${esc(e?.domain||"")}"></div>
+  const curColor=e?.color||hashColor(e?.name||"new");
+  const sws=PALETTE.map(c=>`<span class="sw ${c===curColor?"on":""}" data-c="${c}" style="background:${c}"></span>`).join("");
+  const SOUL_TPL=`## Voice 语气\n- 结论先行,直接谈取舍,不堆"灵活/优雅/赋能"等空词\n\n## 工作原则\n- (你的领域如何判断、给区间而非拍脑袋)\n\n## 边界\n- (哪些不归你管,留给别的专家)\n\n## 别这样说话(反 AI 腔)\n- 不写"作为X"、不复述问题、不写"希望有帮助";不使用 emoji 表情`;
+  openModal(`<h3>${isNew?"新建专家虚拟人":"编辑专家虚拟人"}</h3>
+    <div class="field"><label>头像配色</label>
+      <div class="avatar-edit"><span id="m_avPrev"></span>
+        <div style="flex:1"><div class="hint" style="margin-bottom:8px">头像取名字首字 + 选定底色</div>
+          <div class="swatches" id="m_sw">${sws}</div>
+        </div></div></div>
+    <div class="row"><div><label>名称</label><input type="text" id="m_name" value="${esc(e?.name||"")}"></div>
+    <div><label>领域</label><input type="text" id="m_domain" value="${esc(e?.domain||"")}"></div></div>
+    <div class="row"><div><label>性格标签 vibe</label><input type="text" id="m_vibe" placeholder="如:怀疑式/实用主义" value="${esc(e?.vibe||"")}"></div>
     <div><label>专长</label><input type="text" id="m_spec" value="${esc(e?.specialty||"")}"></div></div>
-    <div class="field"><label>专属模型(睿动多模型,每个专家可不同;在「模型源」遍历更多)</label>
+    <div class="field"><label>专属模型(睿动多模型;在「模型源」遍历更多)</label>
       <div class="actions" style="margin:0"><select id="m_model" style="flex:1">${modelOpts}</select>
       <button class="mini ghost" id="m_test" type="button">联通测试</button><span class="hint" id="m_testHint"></span></div></div>
     <div class="field"><label>专业技能(发言时按其方法论执行)</label>
       <div class="experts" id="m_skills" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">${skillBoxes}</div></div>
-    <div class="field"><label>人设(system prompt)</label><textarea id="m_persona" style="min-height:140px">${esc(e?.persona||"")}</textarea></div>
+    <div class="field"><label>SOUL · 人设(system prompt)
+      <button class="mini ghost" id="m_tpl" type="button" style="margin-left:8px">插入 SOUL 模板</button>
+      <button class="mini ghost" id="m_prev" type="button">预览最终提示词</button></label>
+      <textarea id="m_persona" style="min-height:160px">${esc(e?.persona||"")}</textarea></div>
+    <div class="field" id="m_prevWrap" style="display:none"><label>最终提示词(人设 + 技能 + 知识,即真正送入模型的内容)</label><div class="promptbox" id="m_prevBox"></div></div>
     <div class="actions"><button id="m_save">保存</button><button class="ghost" onclick="closeModal()">取消</button><span class="hint" id="m_hint"></span></div>`);
+  // 头像实时预览
+  let pickColor=curColor;
+  const refreshAv=()=>{ $("#m_avPrev").innerHTML=avatar({name:$("#m_name").value||"新",color:pickColor},"lg"); };
+  refreshAv();
+  $("#m_name").addEventListener("input",refreshAv);
+  $("#m_sw").querySelectorAll(".sw").forEach(s=>s.addEventListener("click",()=>{
+    pickColor=s.dataset.c; $("#m_sw").querySelectorAll(".sw").forEach(x=>x.classList.toggle("on",x===s)); refreshAv();}));
+  $("#m_tpl").addEventListener("click",()=>{const t=$("#m_persona");if(!t.value.includes("## Voice"))t.value=(t.value+"\n\n"+SOUL_TPL).trim();});
+  $("#m_prev").addEventListener("click",async()=>{
+    const r=await api("/experts/preview_prompt",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({persona:$("#m_persona").value,skills:[...$("#m_skills").querySelectorAll("input:checked")].map(i=>i.value),expert_id:e?.id})});
+    $("#m_prevWrap").style.display=""; $("#m_prevBox").textContent=r.prompt+(r.has_knowledge?"":"\n\n(该专家暂无挂载知识,会议中将无知识注入)");
+  });
   $("#m_skills").querySelectorAll("input").forEach(cb=>cb.addEventListener("change",()=>cb.closest("label").classList.toggle("sel",cb.checked)));
   $("#m_test").addEventListener("click",async()=>{
     const mdl=$("#m_model").value||md.default;
@@ -547,7 +610,8 @@ async function editExpert(e){
   });
   $("#m_save").addEventListener("click",async()=>{
     const body={name:$("#m_name").value.trim(),domain:$("#m_domain").value.trim(),specialty:$("#m_spec").value.trim(),
-      persona:$("#m_persona").value.trim(),model:$("#m_model").value,
+      persona:$("#m_persona").value.trim(),model:$("#m_model").value,vibe:$("#m_vibe").value.trim(),
+      emoji:"",color:pickColor,
       skills:[...$("#m_skills").querySelectorAll("input:checked")].map(i=>i.value)};
     if(!body.name||!body.domain||!body.persona){$("#m_hint").textContent="名称/领域/人设必填";return;}
     try{ if(isNew)await api("/experts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});

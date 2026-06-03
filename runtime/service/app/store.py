@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS experts (
   knowledge_ids_json TEXT DEFAULT '[]',
   source TEXT DEFAULT 'custom',
   model TEXT DEFAULT '',
+  emoji TEXT DEFAULT '',
+  color TEXT DEFAULT '',
+  vibe TEXT DEFAULT '',
   kind TEXT DEFAULT 'local',
   endpoint TEXT DEFAULT '',
   api_key TEXT DEFAULT '',
@@ -106,9 +109,25 @@ def init_db() -> None:
         # 轻量迁移:为已存在的旧表补列
         cols = {r[1] for r in c.execute("PRAGMA table_info(experts)")}
         for col, ddl in {"model": "model TEXT DEFAULT ''", "kind": "kind TEXT DEFAULT 'local'",
-                         "endpoint": "endpoint TEXT DEFAULT ''", "api_key": "api_key TEXT DEFAULT ''"}.items():
+                         "endpoint": "endpoint TEXT DEFAULT ''", "api_key": "api_key TEXT DEFAULT ''",
+                         "emoji": "emoji TEXT DEFAULT ''", "color": "color TEXT DEFAULT ''",
+                         "vibe": "vibe TEXT DEFAULT ''"}.items():
             if col not in cols:
                 c.execute(f"ALTER TABLE experts ADD COLUMN {ddl}")
+        c.commit()
+        # 预置专家回填头像配色/vibe(不用 emoji,头像=名字首字+底色)
+        _PRESET_LOOK = {
+            "strategy": ("#b5562a", "结论先行 / 长期取舍"),
+            "finance": ("#2f6f5e", "数字说话 / 警惕乐观假设"),
+            "market": ("#3a6b7a", "一手信号 / 价格周期"),
+            "tech": ("#7c5cff", "可行性优先 / 反过度设计"),
+            "risk": ("#a23b2e", "找极端情形 / 触发-影响-兜底"),
+        }
+        for eid, (col, vibe) in _PRESET_LOOK.items():
+            c.execute("UPDATE experts SET color=?, vibe=? WHERE id=? AND COALESCE(color,'')=''",
+                      (col, vibe, eid))
+        # 清空历史遗留的 emoji(全站不用 emoji)
+        c.execute("UPDATE experts SET emoji='' WHERE COALESCE(emoji,'')!=''")
         c.commit()
         n = c.execute("SELECT COUNT(*) FROM experts").fetchone()[0]
         if n == 0:
@@ -133,6 +152,7 @@ def _expert_row(r: sqlite3.Row) -> dict:
         "skills": json.loads(r["skills_json"] or "[]"),
         "knowledge_ids": json.loads(r["knowledge_ids_json"] or "[]"),
         "source": r["source"], "model": r["model"] or "",
+        "emoji": r["emoji"] or "", "color": r["color"] or "", "vibe": r["vibe"] or "",
         "kind": r["kind"], "endpoint": r["endpoint"],
         "active": bool(r["active"]),
     }
@@ -179,6 +199,7 @@ def get_experts_by_ids(ids: list[str]) -> list[dict]:
 def create_expert(*, name: str, domain: str, persona: str, specialty: str = "",
                   skills: list | None = None, knowledge_ids: list | None = None,
                   eid: str | None = None, source: str = "custom", model: str = "",
+                  emoji: str = "", color: str = "", vibe: str = "",
                   kind: str = "local", endpoint: str = "", api_key: str = "") -> dict:
     eid = eid or f"x_{uuid.uuid4().hex[:8]}"
     now = time.time()
@@ -186,12 +207,12 @@ def create_expert(*, name: str, domain: str, persona: str, specialty: str = "",
     try:
         c.execute(
             "INSERT INTO experts(id,name,domain,specialty,persona,skills_json,"
-            "knowledge_ids_json,source,model,kind,endpoint,api_key,active,created_at,updated_at) "
-            "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,1,?,?)",
+            "knowledge_ids_json,source,model,emoji,color,vibe,kind,endpoint,api_key,active,created_at,updated_at) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,?)",
             (eid, name, domain, specialty, persona,
              json.dumps(skills or [], ensure_ascii=False),
              json.dumps(knowledge_ids or [], ensure_ascii=False),
-             source, model, kind, endpoint, api_key, now, now),
+             source, model, emoji, color, vibe, kind, endpoint, api_key, now, now),
         )
         c.commit()
     finally:
@@ -200,7 +221,7 @@ def create_expert(*, name: str, domain: str, persona: str, specialty: str = "",
 
 
 def update_expert(eid: str, fields: dict) -> dict | None:
-    allowed = {"name", "domain", "specialty", "persona", "active", "model"}
+    allowed = {"name", "domain", "specialty", "persona", "active", "model", "emoji", "color", "vibe"}
     sets, vals = [], []
     for k in allowed & fields.keys():
         sets.append(f"{k}=?")
