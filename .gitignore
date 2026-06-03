@@ -1,0 +1,39 @@
+# dependencies / build outputs
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+release/
+
+# logs
+*.log
+
+# OS junk
+.DS_Store
+
+# secrets — backend/.env 含真实 RUIDONG_API_KEY 和 OPENCLAW_GATEWAY_TOKEN
+backend/.env
+
+# SQLite DB + 生成的图片素材
+backend/data/
+
+# claude code local settings（机器特定 / 含 PID / 含历史命令行）
+.claude/settings.local.json
+
+# OpenClaw local workspace state
+**/.openclaw/
+
+# 圆桌 Python 运行时:.env 含真实 RUIDONG_API_KEY,绝不入库
+runtime/service/.env
+
+# 圆桌运行时 SQLite
+runtime/service/app/data/
+
+# Python
+**/.venv/
+**/__pycache__/
+*.pyc
+
+# 本地打包产物
+*.zip
+*.tar.gz

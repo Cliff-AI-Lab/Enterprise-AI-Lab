@@ -1,0 +1,13 @@
+<svg width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="42" cy="42" r="42" fill="url(#polish-bg)"/>
+  <path d="M57.5 27.5C53.6 23.9 48.4 21.7 42.7 21.7C30.9 21.7 21.3 31.1 21.3 42.7C21.3 46.7 22.4 50.4 24.3 53.6" stroke="white" stroke-width="5.2" stroke-linecap="round"/>
+  <path d="M26.5 56.5C30.4 60.1 35.6 62.3 41.3 62.3C53.1 62.3 62.7 52.9 62.7 41.3C62.7 37.3 61.6 33.6 59.7 30.4" stroke="white" stroke-width="5.2" stroke-linecap="round"/>
+  <path d="M57.2 18.8L58.2 29.3L47.8 27.9" stroke="white" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26.8 65.2L25.8 54.7L36.2 56.1" stroke="white" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="polish-bg" x1="13" y1="9" x2="70" y2="75" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#37BDF6"/>
+      <stop offset="1" stop-color="#0079C9"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "anime-calendar": {
+      "version": "1.0.0",
+      "installedAt": 1780164150854
+    },
+    "anime": {
+      "version": "1.0.1",
+      "installedAt": 1780164154043
+    },
+    "anime-meme-collector": {
+      "version": "0.1.0",
+      "installedAt": 1780164157774
+    }
+  }
+}

@@ -1,0 +1,24 @@
+[project]
+name = "rd-llm-gateway"
+version = "1.0.0"
+description = "LLM provider adapters with stream chunk normalizer"
+requires-python = ">=3.12"
+dependencies = [
+    "rd-agent-contracts",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "respx>=0.21",
+    "ruff>=0.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rd_llm_gateway"]

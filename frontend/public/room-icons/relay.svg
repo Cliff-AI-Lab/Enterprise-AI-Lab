@@ -1,0 +1,13 @@
+<svg width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="42" cy="42" r="42" fill="url(#relay-bg)"/>
+  <path d="M27 24H57L27 42H57L27 60H57" stroke="white" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="27" cy="24" r="4.2" fill="#DDF3FF" stroke="white" stroke-width="2"/>
+  <circle cx="57" cy="42" r="4.2" fill="#DDF3FF" stroke="white" stroke-width="2"/>
+  <circle cx="27" cy="60" r="4.2" fill="#DDF3FF" stroke="white" stroke-width="2"/>
+  <defs>
+    <linearGradient id="relay-bg" x1="13" y1="10" x2="69" y2="76" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#35B8F5"/>
+      <stop offset="1" stop-color="#0386D8"/>
+    </linearGradient>
+  </defs>
+</svg>

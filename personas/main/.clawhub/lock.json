@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "minnow-writing": {
+      "version": "1.0.0",
+      "installedAt": 1780114291525
+    },
+    "clarity-and-grace": {
+      "version": "1.0.0",
+      "installedAt": 1780114294891
+    }
+  }
+}

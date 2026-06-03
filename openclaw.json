@@ -1,0 +1,226 @@
+{
+  "$schema": "https://docs.openclaw.ai/schemas/openclaw.json",
+  "_comment": "TelegramAgent local test config: configured agents + ruidong OpenAI-compat provider + OpenAI HTTP enabled.",
+  "_security_note": "Project copy only. Gateway actually reads ~/.openclaw/openclaw.json. Real secrets live in backend/.env; when generating local gateway config, expand placeholders there. Do not commit resolved secrets.",
+  "gateway": {
+    "mode": "local",
+    "port": 18789,
+    "auth": {
+      "mode": "token",
+      "_note": "Do not inline the gateway token in this project copy. Local ~/.openclaw/openclaw.json may set gateway.auth.token from backend/.env."
+    },
+    "http": {
+      "endpoints": {
+        "chatCompletions": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "models": {
+    "providers": {
+      "ruidong": {
+        "baseUrl": "https://iruidong.com/v1",
+        "apiKey": "${RUIDONG_API_KEY}",
+        "api": "openai-completions",
+        "_note": "ruidong-std backend routes to glm-5.1 (good Chinese writing); ruidong-plus routes to kimi-for-coding (coding-focused). For sarah we pick std.",
+        "models": [
+          {
+            "id": "ruidong-std",
+            "name": "Ruidong Std (glm-5.1)",
+            "input": [
+              "text"
+            ],
+            "contextWindow": 200000,
+            "maxTokens": 98304
+          },
+          {
+            "id": "ruidong-plus",
+            "name": "Ruidong Plus (kimi-for-coding)",
+            "input": [
+              "text"
+            ],
+            "contextWindow": 128000,
+            "maxTokens": 16384
+          },
+          {
+            "id": "kimi-2.6",
+            "name": "Kimi 2.6",
+            "input": [
+              "text"
+            ],
+            "contextWindow": 128000,
+            "maxTokens": 16384
+          },
+          {
+            "id": "ruidong-flash",
+            "name": "Ruidong Flash (multimodal, cheap, 262K ctx)",
+            "input": [
+              "text",
+              "image"
+            ],
+            "contextWindow": 262144,
+            "maxTokens": 32768
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "ruidong/ruidong-std"
+      },
+      "memorySearch": {
+        "provider": "openai-compatible",
+        "model": "bge-m3",
+        "_note": "Reuse ruidong /v1/embeddings; bge-m3 is OpenAI-format embedding model",
+        "remote": {
+          "baseUrl": "https://iruidong.com/v1/",
+          "apiKey": "${RUIDONG_API_KEY}"
+        }
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "workspace": "personas/main",
+        "skills": [
+          "dispatching-parallel-agents"
+        ],
+        "_comment": "Hidden orchestrator. MVP: stub workspace. Skill for future group-room dispatch."
+      },
+      {
+        "id": "sarah",
+        "workspace": "personas/sarah-writer",
+        "model": {
+          "primary": "ruidong/ruidong-std"
+        },
+        "skills": [
+          "minnow-writing",
+          "clarity-and-grace"
+        ],
+        "tools": {
+          "profile": "coding"
+        },
+        "_comment": "Copywriter; coding profile 开 web_search/web_fetch（同时带 fs/runtime——靠 SOUL.md 边界约束不乱碰）"
+      },
+      {
+        "id": "alex",
+        "workspace": "personas/alex-pm",
+        "model": {
+          "primary": "ruidong/ruidong-std"
+        },
+        "skills": [
+          "prd",
+          "project-spec"
+        ],
+        "tools": {
+          "profile": "coding"
+        },
+        "_comment": "PM; coding profile 给 web_search 让他查真产品/数据案例"
+      },
+      {
+        "id": "kai",
+        "workspace": "personas/kai-engineer",
+        "model": {
+          "primary": "ruidong/ruidong-plus"
+        },
+        "skills": [
+          "systematic-debugging",
+          "verification-before-completion",
+          "feature-guardian"
+        ],
+        "tools": {
+          "profile": "coding"
+        },
+        "_comment": "Engineer; coding profile 给 web/fs/runtime；agent 本来就工程向，全开合理"
+      },
+      {
+        "id": "architect",
+        "workspace": "personas/architect",
+        "model": {
+          "primary": "ruidong/ruidong-std"
+        },
+        "skills": [
+          "project-spec",
+          "plan-eng-review",
+          "feature-dev"
+        ],
+        "tools": {
+          "profile": "coding"
+        },
+        "_comment": "System Architect; boundaries/data flow/tradeoffs. coding profile for inspection/research, persona constraints avoid implementation work."
+      },
+      {
+        "id": "mira",
+        "workspace": "personas/mira-designer",
+        "model": {
+          "primary": "ruidong/ruidong-std"
+        },
+        "skills": [
+          "design-review",
+          "layout",
+          "polish"
+        ],
+        "tools": {
+          "profile": "coding"
+        },
+        "_comment": "Product Designer / UI UX; practical design review, layout, interaction, visual hierarchy."
+      },
+      {
+        "id": "lin",
+        "workspace": "personas/lin-qa",
+        "model": {
+          "primary": "ruidong/ruidong-plus"
+        },
+        "skills": [
+          "qa",
+          "verification-before-completion",
+          "feature-guardian"
+        ],
+        "tools": {
+          "profile": "coding"
+        },
+        "_comment": "QA/Test Engineer; acceptance criteria, regression risk, edge cases, verification evidence."
+      },
+      {
+        "id": "iris",
+        "workspace": "personas/iris-researcher",
+        "model": {
+          "primary": "ruidong/ruidong-std"
+        },
+        "skills": [
+          "web-access",
+          "pdf",
+          "xlsx"
+        ],
+        "tools": {
+          "profile": "coding"
+        },
+        "_comment": "Information Researcher; evidence, source quality, external facts and competitive research."
+      },
+      {
+        "id": "maruko",
+        "workspace": "personas/maruko",
+        "model": {
+          "primary": "ruidong/ruidong-std"
+        },
+        "skills": [
+          "anime",
+          "anime-calendar",
+          "anime-meme-collector",
+          "music-gen"
+        ],
+        "_comment": "二次元高二女生; ruidong-std (glm-5.1) 中文自然向。anime skill 调 Jikan/MyAnimeList API 拿真番剧信息（curl+jq，零依赖）。anime-calendar/meme-collector 依赖 web-search tool，目前可能未接通，agent 自主判断能否调。music-gen 教她用 ruidong ace-step 写音乐 prompt（caption+lyrics+段落标签），personal 池 ~/.agents/skills/music-gen/SKILL.md。"
+      }
+    ]
+  },
+  "channels": {},
+  "tools": {
+    "agentToAgent": {
+      "enabled": false,
+      "_note": "Disabled for PoC; turn on when Main Agent starts orchestrating"
+    }
+  }
+}

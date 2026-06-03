@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>虚拟专家圆桌会议</title>
+<style>
+  :root {
+    --bg: #f5f4ed; --ivory: #faf9f5; --card: #ffffff;
+    --ink: #2b2a26; --muted: #6f6b60; --line: #e6e3d8;
+    --accent: #b5562a; --accent-soft: #f3e7df;
+    --ok: #4f7a4f; --conflict: #c2410c;
+    --shadow: 0 1px 2px rgba(43,42,38,.06), 0 4px 16px rgba(43,42,38,.05);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif; }
+  .topnav { position: sticky; top: 0; z-index: 10; background: var(--ivory); border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 4px; padding: 0 22px; box-shadow: var(--shadow); }
+  .topnav .brand { font-weight: 700; letter-spacing: .5px; margin-right: 18px; padding: 14px 0; }
+  .topnav a { padding: 14px 14px; color: var(--muted); cursor: pointer; font-size: 14px; font-weight: 600;
+    border-bottom: 2px solid transparent; }
+  .topnav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 26px 22px 80px; }
+  h1 { font-size: 21px; margin: 0 0 2px; } .sub { color: var(--muted); margin: 0 0 22px; font-size: 13.5px; }
+  .panel { background: var(--ivory); border: 1px solid var(--line); border-radius: 14px; padding: 18px; margin-bottom: 22px; box-shadow: var(--shadow); }
+  label { display: block; font-size: 12.5px; color: var(--muted); margin: 0 0 5px; font-weight: 600; }
+  input[type=text], input[type=url], textarea, select {
+    width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px;
+    background: var(--card); color: var(--ink); font: inherit; font-size: 14px; }
+  textarea { resize: vertical; min-height: 54px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .field { margin-bottom: 14px; }
+  .experts { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 8px; }
+  .exp { display: flex; gap: 9px; align-items: flex-start; padding: 9px 11px; border: 1px solid var(--line);
+    border-radius: 10px; background: var(--card); cursor: pointer; transition: border-color .12s, background .12s; }
+  .exp:hover { border-color: #d8d2c2; } .exp.sel { border-color: var(--accent); background: var(--accent-soft); }
+  .exp input { margin-top: 3px; } .exp .nm { font-weight: 600; font-size: 13.5px; } .exp .dm { color: var(--muted); font-size: 12px; }
+  .actions { display: flex; gap: 12px; align-items: center; margin-top: 4px; flex-wrap: wrap; }
+  button { background: var(--accent); color: #fff; border: 0; border-radius: 10px; padding: 10px 22px;
+    font: inherit; font-weight: 600; cursor: pointer; font-size: 14px; }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 7px 14px; }
+  button.mini { padding: 5px 11px; font-size: 12.5px; border-radius: 8px; }
+  button:disabled { opacity: .5; cursor: default; }
+  .hint { color: var(--muted); font-size: 12.5px; } .err-text { color: #a33; }
+  .stream { display: flex; flex-direction: column; gap: 14px; }
+  .block { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 15px 17px; box-shadow: var(--shadow); }
+  .block .tag { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--accent); margin-bottom: 7px; }
+  .agenda ol { margin: 6px 0 0; padding-left: 20px; } .agenda li { margin: 3px 0; }
+  .topic-head { font-size: 16px; font-weight: 700; margin: 10px 0 2px; padding-top: 6px; }
+  .topic-head .ix { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color:#fff; font-size: 12px; align-items: center; justify-content: center; margin-right: 8px; vertical-align: middle; }
+  .turn { border-left: 3px solid var(--line); padding: 2px 0 2px 13px; margin: 11px 0; }
+  .turn.fu { border-left-color: var(--accent); }
+  .turn .who { font-weight: 600; font-size: 13.5px; } .turn .who .dm { color: var(--muted); font-weight: 400; font-size: 12px; margin-left: 6px; }
+  .turn .who .fu-tag { color: var(--accent); font-size: 11px; margin-left: 6px; } .turn .tx { margin-top: 3px; white-space: pre-wrap; }
+  .conflict { background: #fff6f0; border: 1px solid #f0d6c4; border-radius: 10px; padding: 11px 13px; margin: 11px 0; }
+  .conflict .tag { color: var(--conflict); } .conflict .q { font-weight: 600; margin-top: 4px; }
+  .summary { background: #fbfaf4; border: 1px dashed var(--line); border-radius: 10px; padding: 11px 13px; margin: 11px 0; }
+  .summary h4 { margin: 8px 0 3px; font-size: 12.5px; color: var(--muted); } .summary ul { margin: 0; padding-left: 18px; }
+  .concl { border-color: var(--accent); } .concl .ctext { font-size: 15px; line-height: 1.7; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-size: 11.5px; text-transform: uppercase; }
+  .pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .meta { color: var(--muted); font-size: 12px; }
+  .dot { display:inline-block; width:7px; height:7px; border-radius:50%; background: var(--accent); margin-right:7px; animation: pulse 1.1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+  .err { background:#fff0f0; border:1px solid #f0c4c4; color:#a33; border-radius:10px; padding:11px 13px; }
+  /* expert cards */
+  .ecard { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 13px 15px; box-shadow: var(--shadow); }
+  .ecard.off { opacity: .55; } .ecard .hd { display:flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .ecard .nm { font-weight: 700; } .ecard .badge { font-size: 11px; padding: 1px 7px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+  .ecard .badge.ext { background: #e8eef0; color: #3a6b7a; } .ecard .badge.kn { background:#eef3e8; color: var(--ok); }
+  .ecard .pa { color: var(--muted); font-size: 12.5px; margin-top: 6px; max-height: 60px; overflow: hidden; }
+  .ecard .ops { display:flex; gap:7px; margin-top: 10px; flex-wrap: wrap; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .toolbar { display:flex; gap:10px; align-items:center; margin-bottom: 14px; flex-wrap: wrap; }
+  .modal-bg { position: fixed; inset: 0; background: rgba(43,42,38,.4); display:none; align-items:center; justify-content:center; z-index: 50; }
+  .modal-bg.show { display:flex; } .modal { background: var(--ivory); border-radius: 14px; padding: 20px; width: 560px; max-width: 92vw; max-height: 88vh; overflow:auto; box-shadow: var(--shadow); }
+  .modal h3 { margin: 0 0 14px; } .docitem { display:flex; justify-content: space-between; gap:8px; padding:7px 10px; border:1px solid var(--line); border-radius:8px; background: var(--card); margin-bottom:6px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="topnav">
+  <span class="brand">多智能体协作平台</span>
+  <a data-view="home" class="active">首页</a>
+  <a data-view="meeting">圆桌会议</a>
+  <a data-view="experts">智能体配置</a>
+  <a data-view="records">会议记录</a>
+  <a data-view="dash">监控仪表盘</a>
+</div>
+
+<!-- ===== 首页:三种协作模式 + 智能体配置;圆桌会议模块在下方 ===== -->
+<div class="wrap view" id="view-home">
+  <h1>多智能体协作平台</h1>
+  <p class="sub">挑一种协作模式开工,或进入虚拟专家圆桌会议 — 专家智能体可各自配置模型 / 技能 / 知识</p>
+
+  <div class="experts-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:18px">
+    <div class="ecard mode-card" data-mode="relay" style="cursor:pointer">
+      <div class="hd"><span class="nm" style="font-size:16px">接龙协作</span><span class="badge">顺序</span></div>
+      <div class="pa" style="max-height:none">专家依序发言,每人在前一棒成果上实质推进,主持人最后整合成稿。适合方案逐层深化。</div>
+      <div class="ops"><button class="mini">进入接龙</button></div>
+    </div>
+    <div class="ecard mode-card" data-mode="brainstorm" style="cursor:pointer">
+      <div class="hd"><span class="nm" style="font-size:16px">头脑风暴</span><span class="badge">并行</span></div>
+      <div class="pa" style="max-height:none">全员并行独立出想法互不干扰,完成即流出,主持人聚类精选方向。适合开题与创意发散。</div>
+      <div class="ops"><button class="mini">进入风暴</button></div>
+    </div>
+    <div class="ecard mode-card" data-mode="polish" style="cursor:pointer">
+      <div class="hd"><span class="nm" style="font-size:16px">打磨工坊</span><span class="badge">循环</span></div>
+      <div class="pa" style="max-height:none">一位创作、其余评审,按意见逐轮修订直至成稿。适合文案、方案、代码的精修。</div>
+      <div class="ops"><button class="mini">进入打磨</button></div>
+    </div>
+    <div class="ecard" id="homeConfig" style="cursor:pointer">
+      <div class="hd"><span class="nm" style="font-size:16px">智能体虚拟人配置</span><span class="badge kn">配置</span></div>
+      <div class="pa" style="max-height:none">创建/管理专家虚拟人:人设、专属模型(睿动 key 遍历+联通测试)、专业技能、知识升级(上传文件/抽 wiki)。</div>
+      <div class="ops"><button class="mini ghost">去配置</button></div>
+    </div>
+  </div>
+
+  <div class="panel" id="homeRoundtable" style="cursor:pointer;border-color:var(--accent)">
+    <div class="hd" style="display:flex;justify-content:space-between;align-items:center">
+      <div><span style="font-size:17px;font-weight:700;color:var(--accent)">虚拟专家圆桌会议</span>
+        <div class="meta" style="margin-top:4px">主持人 Agent 拆议程(人工确认)→ 安排发言顺序 → 冲突追问 → 阶段总结 → 结论/风险/行动;支持人类发言与干预、纪要导出 PDF/Word/MD</div></div>
+      <button>发起圆桌会议</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 协作模式运行页 ===== -->
+<div class="wrap view" id="view-modes" style="display:none">
+  <h1 id="modeTitle">协作模式</h1>
+  <p class="sub" id="modeDesc"></p>
+  <div class="panel" id="modeSetup">
+    <div class="field"><label>任务 / 主题</label><textarea id="mTask" placeholder="例如:为新品「益生菌饲料」写一页销售方案"></textarea></div>
+    <div class="field"><label id="mExpLabel">参与专家(至少 2 位)</label><div class="experts" id="mExperts"></div></div>
+    <div class="row">
+      <div><label>主持/兜底模型</label><select id="mModel"></select></div>
+      <div id="mRoundsWrap"><label>轮数</label><select id="mRounds"><option value="1" selected>1 轮</option><option value="2">2 轮</option><option value="3">3 轮</option></select></div>
+    </div>
+    <div class="actions"><button id="mRun">开始协作</button><button class="ghost" onclick="switchView('home')">返回首页</button><span class="hint" id="mHint"></span></div>
+  </div>
+  <div class="stream" id="mStream"></div>
+</div>
+
+<!-- ===== 圆桌会议 ===== -->
+<div class="wrap view" id="view-meeting" style="display:none">
+  <h1>发起圆桌会议</h1>
+  <p class="sub">主持人自动拆议程(≥3)→ 你确认/调整 → 逐议题推进,可中途发言或干预 → 聚合结论</p>
+
+  <!-- 阶段1:设置 -->
+  <div class="panel" id="stage-setup">
+    <div class="field"><label>会议主题</label><input type="text" id="topic" placeholder="例如:是否在两广新建一座 50 万头楼房猪场" /></div>
+    <div class="field"><label>背景信息(可选)</label><textarea id="desc" placeholder="补充约束、数据、决策背景…"></textarea></div>
+    <div class="field"><label>参会专家(至少 2 位)</label><div class="experts" id="experts"></div></div>
+    <div class="row">
+      <div><label>会议模式</label><select id="mode"><option value="roundtable">多人圆桌(3-10 专家+主持人)</option><option value="1v1">1V1 对话(2 专家)</option></select></div>
+      <div><label>模型</label><select id="model"></select></div>
+    </div>
+    <div class="row">
+      <div><label>分歧追问轮数</label><select id="followup"><option value="1" selected>1 轮(默认)</option><option value="0">不追问</option><option value="2">2 轮</option></select></div>
+      <div></div>
+    </div>
+    <div class="actions"><button id="btnCreate">创建会议并拆解议程</button>
+      <button class="ghost" id="btnQuick">快速一次性跑完</button><span class="hint" id="hint"></span></div>
+  </div>
+
+  <!-- 阶段2:议程确认 -->
+  <div class="panel" id="stage-agenda" style="display:none">
+    <div class="tag" style="color:var(--accent);font-weight:700;margin-bottom:8px">确认议程(可调整顺序、增删)</div>
+    <div id="agendaList"></div>
+    <div class="actions" style="margin-top:12px">
+      <input type="text" id="newItem" placeholder="新增一个议题…" style="flex:1;min-width:200px">
+      <button class="mini ghost" id="btnAddItem">+ 添加</button>
+    </div>
+    <div class="actions" style="margin-top:14px">
+      <button id="btnConfirm">确认议程并开始</button>
+      <button class="ghost" id="btnRegen">重新生成</button>
+      <span class="hint" id="agHint"></span>
+    </div>
+  </div>
+
+  <!-- 阶段3:会议室控制条 -->
+  <div class="panel" id="stage-room" style="display:none">
+    <div class="actions">
+      <button id="btnAdvance">推进下一议题</button>
+      <button class="ghost" id="btnAuto">自动连跑到结束</button>
+      <span class="hint" id="roomHint"></span>
+    </div>
+    <div class="actions" style="margin-top:12px">
+      <input type="text" id="speakBox" placeholder="以参会者身份发言…" style="flex:1;min-width:200px">
+      <button class="mini ghost" id="btnSpeak">发言</button>
+      <input type="text" id="interveneBox" placeholder="给主持人一句指引(干预)…" style="flex:1;min-width:200px">
+      <button class="mini ghost" id="btnIntervene">干预</button>
+    </div>
+  </div>
+
+  <div class="stream" id="stream"></div>
+</div>
+
+<!-- ===== 专家管理 ===== -->
+<div class="wrap view" id="view-experts" style="display:none">
+  <h1>专家智能体管理</h1>
+  <p class="sub">创建 / 编辑 / 启停领域专家;外部 API 注册;上传文件或抽取 wiki 给专家做知识升级</p>
+  <div class="toolbar">
+    <label style="margin:0">领域</label>
+    <select id="domainFilter" style="width:auto"><option value="">全部</option></select>
+    <button class="mini" id="btnNew">+ 新建专家</button>
+    <button class="mini ghost" id="btnReg">外部 API 注册</button>
+    <button class="mini ghost" id="btnFromKn">上传知识造专家</button>
+    <button class="mini ghost" id="btnKn">知识库</button>
+    <button class="mini ghost" id="btnModelSrc">模型源(睿动 key)</button>
+    <span class="hint" id="eHint"></span>
+  </div>
+  <div class="experts-grid" id="expertGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px"></div>
+</div>
+
+<!-- ===== 会议记录 ===== -->
+<div class="wrap view" id="view-records" style="display:none">
+  <h1>会议记录</h1>
+  <p class="sub">查看历史 / 进行中会议,按状态筛选,点开回放完整讨论</p>
+  <div class="toolbar">
+    <label style="margin:0">状态</label>
+    <select id="statusFilter" style="width:auto"><option value="">全部</option><option value="preparing">准备中</option><option value="running">进行中</option><option value="done">已结束</option></select>
+    <button class="mini ghost" id="btnRefreshRec">刷新</button>
+  </div>
+  <div id="recordList"></div>
+</div>
+
+<!-- ===== 监控仪表盘 ===== -->
+<div class="wrap view" id="view-dash" style="display:none">
+  <h1>会议监控仪表盘</h1>
+  <p class="sub">实时会议状态 · 专家响应健康 · 告警 · 运营统计(每 10s 自动刷新)</p>
+  <div class="experts-grid" id="dashCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:18px"></div>
+  <div class="panel"><div class="tag" style="color:var(--accent);font-weight:700">进行中会议(可人工接管)</div><div id="dashActive"></div></div>
+  <div class="grid2">
+    <div class="panel"><div class="tag" style="color:var(--accent);font-weight:700">专家响应统计(近 7 天)</div><div id="dashExperts"></div></div>
+    <div class="panel"><div class="tag" style="color:var(--conflict);font-weight:700">告警</div><div id="dashAlerts"></div></div>
+  </div>
+  <div class="panel"><div class="tag" style="color:var(--muted);font-weight:700">审计日志(最近)</div><div id="dashAudit"></div></div>
+</div>
+
+<!-- modal -->
+<div class="modal-bg" id="modalBg"><div class="modal" id="modalBox"></div></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const el = (t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const esc = s => String(s ?? "").replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+const li = a => (a||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+const api = async (u,opt)=>{const r=await fetch(u,opt);const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||d.error||("HTTP "+r.status));return d;};
+
+/* ---------- nav / 视图切换 ---------- */
+function switchView(name){
+  document.querySelectorAll(".topnav a").forEach(x=>x.classList.toggle("active",x.dataset.view===name));
+  document.querySelectorAll(".view").forEach(v=>v.style.display="none");
+  const v=$("#view-"+name); if(v)v.style.display="";
+  if(name==="experts") loadExperts();
+  if(name==="meeting") boot();
+  if(name==="records") loadRecords();
+  if(name==="dash") startDash(); else stopDash();
+}
+document.querySelectorAll(".topnav a").forEach(a=>a.addEventListener("click",()=>switchView(a.dataset.view)));
+
+/* ---------- 首页 ---------- */
+const MODE_META={
+  relay:{name:"接龙协作",desc:"专家依序发言,每人在前一棒成果上推进;主持人最后整合成稿。"},
+  brainstorm:{name:"头脑风暴",desc:"全员并行独立出想法,完成即流出;主持人聚类精选 3-5 个方向。"},
+  polish:{name:"打磨工坊",desc:"第 1 位勾选的专家担任创作者产出初稿,其余专家评审,逐轮修订成稿。"}};
+let MODE="relay";
+document.querySelectorAll(".mode-card").forEach(c=>c.addEventListener("click",()=>openMode(c.dataset.mode)));
+$("#homeConfig").addEventListener("click",()=>switchView("experts"));
+$("#homeRoundtable").addEventListener("click",()=>switchView("meeting"));
+
+async function openMode(m){
+  MODE=m; const meta=MODE_META[m];
+  $("#modeTitle").textContent=meta.name; $("#modeDesc").textContent=meta.desc;
+  $("#mExpLabel").textContent = m==="polish" ? "参与专家(第 1 位勾选 = 创作者,其余 = 评审)" : "参与专家(至少 2 位)";
+  $("#mStream").innerHTML=""; switchView("modes");
+  const [ex,md]=await Promise.all([api("/experts?active_only=true&page_size=200"),api("/models")]);
+  const box=$("#mExperts"); box.innerHTML="";
+  (ex.experts||[]).forEach((e,i)=>{
+    const lab=el("label","exp"+(i<3?" sel":""));
+    lab.innerHTML=`<input type="checkbox" value="${e.id}" ${i<3?"checked":""}>
+      <span><span class="nm">${esc(e.name)}</span> · <span class="dm">${esc(e.domain)}</span>
+      <div class="dm">${e.model?esc(e.model):"跟随会议模型"}${(e.skills||[]).length?` · 技能${e.skills.length}`:""}</div></span>`;
+    const cb=lab.querySelector("input");
+    cb.addEventListener("change",()=>lab.classList.toggle("sel",cb.checked));
+    box.appendChild(lab);
+  });
+  const sel=$("#mModel"); sel.innerHTML="";
+  (md.models||[]).forEach(x=>{const o=el("option");o.value=x;o.textContent=x+(x===md.default?" (默认)":"");sel.appendChild(o);});
+}
+$("#mRun").addEventListener("click",async()=>{
+  const task=$("#mTask").value.trim();
+  const ids=[...$("#mExperts").querySelectorAll("input:checked")].map(i=>i.value);
+  if(!task){$("#mHint").textContent="请填写任务/主题";return;}
+  if(ids.length<2){$("#mHint").textContent="至少选 2 位专家";return;}
+  $("#mHint").textContent=""; $("#mRun").disabled=true;
+  const stream=$("#mStream"); stream.innerHTML=""; topicBlocks={};
+  const live=el("div","block"); live.innerHTML=`<span class="dot"></span>${MODE_META[MODE].name}进行中…`; stream.appendChild(live);
+  await streamSSE("/modes/run",{mode:MODE,task,expert_ids:ids,model:$("#mModel").value,rounds:parseInt($("#mRounds").value,10)},
+    ev=>{ if(ev.type==="meeting.id")CUR_MID=ev.meeting_id; if(stream.contains(live))live.remove(); handle(ev,stream);});
+  $("#mRun").disabled=false;
+});
+
+/* ---------- modal ---------- */
+function openModal(html){ $("#modalBox").innerHTML=html; $("#modalBg").classList.add("show"); }
+function closeModal(){ $("#modalBg").classList.remove("show"); }
+$("#modalBg").addEventListener("click",e=>{ if(e.target===$("#modalBg")) closeModal(); });
+
+/* ================= 圆桌会议 ================= */
+let EXPERTS=[]; let topicBlocks={};
+async function boot(){
+  const [ex,md]=await Promise.all([api("/experts?active_only=true&page_size=200"),api("/models")]);
+  EXPERTS=ex.experts||[];
+  const box=$("#experts"); box.innerHTML="";
+  EXPERTS.forEach(e=>{
+    const lab=el("label","exp sel");
+    lab.innerHTML=`<input type="checkbox" value="${e.id}" checked>
+      <span><span class="nm">${esc(e.name)}</span> · <span class="dm">${esc(e.domain)}</span>
+      <div class="dm">${esc(e.specialty||"")}</div></span>`;
+    const cb=lab.querySelector("input");
+    cb.addEventListener("change",()=>lab.classList.toggle("sel",cb.checked));
+    box.appendChild(lab);
+  });
+  const sel=$("#model"); sel.innerHTML="";
+  (md.models||[]).forEach(m=>{const o=el("option");o.value=m;o.textContent=m+(m===md.default?" (默认)":"");sel.appendChild(o);});
+}
+const chosenIds=()=>[...document.querySelectorAll("#experts input:checked")].map(i=>i.value);
+
+function handle(ev,stream){
+  switch(ev.type){
+    case "meeting.id": { const b=el("div","block"); b.innerHTML=`<span class="meta">会议 ID: ${esc(ev.meeting_id)}</span>`; stream.appendChild(b); break; }
+    case "meeting.started":{const MN={relay:"接龙协作",brainstorm:"头脑风暴",polish:"打磨工坊"};const b=el("div","block");b.innerHTML=`<div class="tag">${MN[ev.mode]?MN[ev.mode]+" 开始":"会议开始"}</div><div><b>${esc(ev.topic)}</b></div><div class="meta" style="margin-top:6px">参与:${ev.experts.map(e=>esc(e.name)).join(" · ")}</div>`;stream.appendChild(b);break;}
+    case "agenda":{const b=el("div","block agenda");b.innerHTML=`<div class="tag">议程</div><ol>${li(ev.items)}</ol>`;stream.appendChild(b);break;}
+    case "topic.started":{const b=el("div","block");b.innerHTML=`<div class="topic-head"><span class="ix">${ev.index+1}</span>${esc(ev.title)}</div>`;stream.appendChild(b);topicBlocks[ev.index]=b;break;}
+    case "turn":{const b=topicBlocks[ev.topic_index]||stream;const fu=ev.phase==="followup";const t=el("div","turn"+(fu?" fu":""));
+      t.innerHTML=`<div class="who">${esc(ev.expert_name)}<span class="dm">${esc(ev.domain)}</span>${fu?'<span class="fu-tag">· 追问回应</span>':''}</div><div class="tx">${esc(ev.text)}</div>`;b.appendChild(t);break;}
+    case "moderator.turn":{const b=(ev.topic_index!=null&&topicBlocks[ev.topic_index])||stream;
+      const t=el("div","turn");t.style.borderLeftColor="var(--accent)";
+      t.innerHTML=`<div class="who" style="color:var(--accent)">主持人<span class="dm">${ev.phase==="opening"?"开场":"组织发言"}</span></div><div class="tx">${esc(ev.text)}</div>${ev.order&&ev.order.length?`<div class="meta" style="margin-top:4px">发言顺序:${ev.order.map(esc).join(" → ")}</div>`:""}`;
+      b.appendChild(t);break;}
+    case "conflict":{const b=topicBlocks[ev.topic_index]||stream;const c=el("div","conflict");
+      c.innerHTML=`<div class="tag">主持人 · 检测到分歧,发起追问</div><div>${esc(ev.summary)}</div><div class="q">追问:${esc(ev.question)}</div>${ev.involved&&ev.involved.length?`<div class="meta" style="margin-top:4px">请回应:${ev.involved.map(esc).join("、")}</div>`:""}`;b.appendChild(c);break;}
+    case "stage_summary":{const b=topicBlocks[ev.topic_index]||stream;const s=el("div","summary");
+      s.innerHTML=`<div class="tag">主持人 · 阶段总结</div>${ev.core&&ev.core.length?`<h4>核心观点</h4><ul>${li(ev.core)}</ul>`:""}${ev.consensus&&ev.consensus.length?`<h4>共识</h4><ul>${li(ev.consensus)}</ul>`:""}${ev.divergence&&ev.divergence.length?`<h4>分歧</h4><ul>${li(ev.divergence)}</ul>`:""}`;b.appendChild(s);break;}
+    case "conclusion":{const b=el("div","block concl");let risks="";
+      if(ev.risks&&ev.risks.length){risks=`<table><tr><th>风险</th><th>涉及议题</th><th>专家观点</th></tr>`+ev.risks.map(r=>`<tr><td>${esc(r.risk)}</td><td>${esc(r.topic)}</td><td>${esc(r.expert_view)}</td></tr>`).join("")+`</table>`;}
+      b.innerHTML=`<div class="tag">主持人 · 最终结论</div><div class="ctext">${esc(ev.conclusion)}</div>${risks?`<h4 style="margin:14px 0 0;color:var(--muted);font-size:12.5px">风险清单</h4>${risks}`:""}${ev.actions&&ev.actions.length?`<h4 style="margin:14px 0 4px;color:var(--muted);font-size:12.5px">行动建议</h4><ul>${li(ev.actions)}</ul>`:""}`;stream.appendChild(b);break;}
+    case "meeting.finished":{const b=el("div","block");b.innerHTML=`<span class="pill">会议结束</span>`+(CUR_MID?` <button class="mini ghost" onclick="exportMeeting('${CUR_MID}','md')">导出 MD</button> <button class="mini ghost" onclick="exportMeeting('${CUR_MID}','docx')">导出 Word</button> <button class="mini ghost" onclick="exportMeeting('${CUR_MID}','pdf')">导出 PDF</button>`:"");stream.appendChild(b);break;}
+    case "topic.done":{const b=el("div","block");b.innerHTML=`<span class="meta">议题 ${ev.index+1} 讨论完毕${ev.remaining>0?`,剩余 ${ev.remaining} 个`:",可推进生成结论"}</span>`;stream.appendChild(b);break;}
+    case "intervention":{const b=el("div","block");b.style.borderLeft="3px solid var(--accent)";b.innerHTML=`<span class="meta">主持人指引</span><div>${esc(ev.text)}</div>`;stream.appendChild(b);break;}
+    case "human.turn":{const t=el("div","turn");t.style.borderLeftColor="var(--ok)";t.innerHTML=`<div class="who" style="color:var(--ok)">${esc(ev.name||"我")}<span class="dm">参会者</span></div><div class="tx">${esc(ev.text)}</div>`;stream.appendChild(t);break;}
+    case "error":{const b=el("div","err");b.textContent="出错:"+(ev.error||"未知错误");stream.appendChild(b);break;}
+  }
+  window.scrollTo(0,document.body.scrollHeight);
+}
+let CUR_MID=null; let CUR_AGENDA=[]; let AUTO=false;
+async function streamSSE(url,body,onEvt){
+  const res=await fetch(url,{method:"POST",headers:body?{"Content-Type":"application/json"}:{},body:body?JSON.stringify(body):undefined});
+  const reader=res.body.getReader(); const dec=new TextDecoder(); let buf="";
+  while(true){const {value,done}=await reader.read(); if(done)break; buf+=dec.decode(value,{stream:true});
+    let idx; while((idx=buf.indexOf("\n\n"))>=0){const frame=buf.slice(0,idx);buf=buf.slice(idx+2);
+      const line=frame.split("\n").find(l=>l.startsWith("data:")); if(!line)continue;
+      const p=line.slice(5).trim(); if(p==="[DONE]")continue; try{onEvt(JSON.parse(p));}catch(e){}}}
+}
+const showStage=s=>{["setup","agenda","room"].forEach(x=>$("#stage-"+x).style.display=x===s?"":"none");};
+
+/* 一次性快速跑(保留) */
+$("#btnQuick").addEventListener("click",async()=>{
+  const topic=$("#topic").value.trim(); const ids=chosenIds();
+  if(!topic){$("#hint").textContent="请填写会议主题";return;}
+  if(ids.length<2){$("#hint").textContent="至少选择 2 位专家";return;}
+  $("#hint").textContent=""; $("#btnQuick").disabled=true; $("#btnCreate").disabled=true;
+  const stream=$("#stream"); stream.innerHTML=""; topicBlocks={}; CUR_MID=null;
+  const live=el("div","block"); live.innerHTML=`<span class="dot"></span>主持人正在组织会议…`; stream.appendChild(live);
+  await streamSSE("/meeting/run",{topic,description:$("#desc").value,expert_ids:ids,model:$("#model").value,max_followup:parseInt($("#followup").value,10)},
+    ev=>{ if(ev.type==="meeting.id")CUR_MID=ev.meeting_id; if($("#stream").contains(live))live.remove(); handle(ev,stream);});
+  $("#btnQuick").disabled=false; $("#btnCreate").disabled=false;
+});
+
+/* 分步:创建 → 拆解议程 */
+$("#btnCreate").addEventListener("click",async()=>{
+  const topic=$("#topic").value.trim(); const ids=chosenIds();
+  if(!topic){$("#hint").textContent="请填写会议主题";return;}
+  if(ids.length<2){$("#hint").textContent="至少选择 2 位专家";return;}
+  $("#hint").textContent=""; $("#btnCreate").disabled=true;
+  try{
+    const r=await api("/meeting/create",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({topic,description:$("#desc").value,expert_ids:ids,mode:$("#mode").value,model:$("#model").value,max_followup:parseInt($("#followup").value,10)})});
+    CUR_MID=r.meeting.id;
+    $("#agHint").textContent="主持人正在拆解议程…"; showStage("agenda"); renderAgenda([]);
+    const ag=await api(`/meeting/${CUR_MID}/agenda/generate`,{method:"POST"});
+    CUR_AGENDA=ag.agenda; renderAgenda(CUR_AGENDA); $("#agHint").textContent="";
+  }catch(ex){$("#hint").textContent=ex.message;}
+  $("#btnCreate").disabled=false;
+});
+function renderAgenda(items){
+  CUR_AGENDA=items;
+  const box=$("#agendaList"); box.innerHTML="";
+  if(!items.length){box.innerHTML='<span class="hint">生成中…</span>';return;}
+  items.forEach((it,i)=>{
+    const row=el("div","docitem");
+    row.innerHTML=`<span><b>${i+1}.</b> ${esc(it)}</span><span style="white-space:nowrap">
+      <button class="mini ghost" data-up="${i}" ${i===0?"disabled":""}>↑</button>
+      <button class="mini ghost" data-down="${i}" ${i===items.length-1?"disabled":""}>↓</button>
+      <button class="mini ghost" data-del="${i}">删</button></span>`;
+    box.appendChild(row);
+  });
+  box.querySelectorAll("button[data-up]").forEach(b=>b.addEventListener("click",()=>{const i=+b.dataset.up;[items[i-1],items[i]]=[items[i],items[i-1]];renderAgenda(items);}));
+  box.querySelectorAll("button[data-down]").forEach(b=>b.addEventListener("click",()=>{const i=+b.dataset.down;[items[i+1],items[i]]=[items[i],items[i+1]];renderAgenda(items);}));
+  box.querySelectorAll("button[data-del]").forEach(b=>b.addEventListener("click",()=>{items.splice(+b.dataset.del,1);renderAgenda(items);}));
+}
+$("#btnAddItem").addEventListener("click",()=>{const v=$("#newItem").value.trim();if(v){CUR_AGENDA.push(v);$("#newItem").value="";renderAgenda(CUR_AGENDA);}});
+$("#btnRegen").addEventListener("click",async()=>{$("#agHint").textContent="重新生成…";const ag=await api(`/meeting/${CUR_MID}/agenda/generate`,{method:"POST"});renderAgenda(ag.agenda);$("#agHint").textContent="";});
+
+/* 确认议程 → 进入会议室 */
+$("#btnConfirm").addEventListener("click",async()=>{
+  if(CUR_AGENDA.length<1){$("#agHint").textContent="议程不能为空";return;}
+  await api(`/meeting/${CUR_MID}/agenda`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:CUR_AGENDA})});
+  showStage("room"); const stream=$("#stream"); stream.innerHTML=""; topicBlocks={};
+  const b=el("div","block agenda"); b.innerHTML=`<div class="tag">已确认议程</div><ol>${li(CUR_AGENDA)}</ol>`; stream.appendChild(b);
+  $("#roomHint").textContent="点「推进下一议题」开始";
+});
+
+async function advanceOnce(){
+  $("#btnAdvance").disabled=true; $("#btnAuto").disabled=true;
+  const stream=$("#stream"); let finished=false; let lastTopicDone=false;
+  const live=el("div","block"); live.innerHTML=`<span class="dot"></span>讨论进行中…`; stream.appendChild(live);
+  await streamSSE(`/meeting/${CUR_MID}/advance`,null,ev=>{ if($("#stream").contains(live))live.remove();
+    if(ev.type==="meeting.finished")finished=true; if(ev.type==="topic.done")lastTopicDone=true; handle(ev,stream);});
+  $("#btnAdvance").disabled=false; $("#btnAuto").disabled=false;
+  return finished;
+}
+$("#btnAdvance").addEventListener("click",()=>advanceOnce());
+$("#btnAuto").addEventListener("click",async()=>{
+  AUTO=true; $("#roomHint").textContent="自动连跑中…";
+  for(let i=0;i<20 && AUTO;i++){ const fin=await advanceOnce(); if(fin)break; }
+  AUTO=false; $("#roomHint").textContent="";
+});
+$("#btnSpeak").addEventListener("click",async()=>{
+  const t=$("#speakBox").value.trim(); if(!t)return;
+  const r=await api(`/meeting/${CUR_MID}/speak`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});
+  handle(r.event,$("#stream")); $("#speakBox").value="";
+});
+$("#btnIntervene").addEventListener("click",async()=>{
+  const t=$("#interveneBox").value.trim(); if(!t)return;
+  await api(`/meeting/${CUR_MID}/intervene`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});
+  handle({type:"intervention",text:t},$("#stream")); $("#interveneBox").value="";
+});
+function exportMeeting(mid,fmt){ window.open(`/meeting/${mid}/export?format=${fmt}`,"_blank"); }
+
+/* ================= 会议记录 ================= */
+async function loadRecords(){
+  const st=$("#statusFilter").value;
+  const d=await api("/meetings"+(st?`?status=${st}`:""));
+  const box=$("#recordList"); const rows=d.meetings||[];
+  const ST={preparing:"准备中",running:"进行中",done:"已结束"};
+  box.innerHTML=rows.length?rows.map(m=>`<div class="docitem"><span><b>${esc(m.topic)}</b>
+    <span class="meta">· ${ST[m.status]||m.status} · ${new Date(m.created_at*1000).toLocaleString("zh-CN")}</span></span>
+    <button class="mini ghost" data-mid="${m.id}">查看</button></div>`).join(""):'<span class="hint">暂无会议</span>';
+  box.querySelectorAll("button[data-mid]").forEach(b=>b.addEventListener("click",()=>recordDetail(b.dataset.mid)));
+}
+$("#btnRefreshRec").addEventListener("click",loadRecords);
+$("#statusFilter").addEventListener("change",loadRecords);
+async function recordDetail(mid){
+  const d=await api(`/meeting/${mid}`); const m=d.meeting;
+  let html=`<h3>${esc(m.topic)}</h3><p class="hint">参会:${(d.experts||[]).map(e=>esc(e.name)).join(" · ")} · 状态 ${esc(m.status)}</p>
+    <div class="actions" style="margin-bottom:12px"><button class="mini ghost" onclick="exportMeeting('${mid}','md')">导出 MD</button>
+    <button class="mini ghost" onclick="exportMeeting('${mid}','docx')">导出 Word</button>
+    <button class="mini ghost" onclick="exportMeeting('${mid}','pdf')">导出 PDF</button></div>
+    <div class="stream" id="replay"></div><div class="actions" style="margin-top:12px"><button class="ghost" onclick="closeModal()">关闭</button></div>`;
+  openModal(html);
+  const rs=$("#replay"); topicBlocks={}; (d.events||[]).forEach(ev=>handle(ev,rs));
+}
+
+/* ================= 专家管理 ================= */
+let ALL_EXPERTS=[];
+async function loadExperts(){
+  const d=await api("/experts?page_size=200");
+  ALL_EXPERTS=d.experts||[];
+  const df=$("#domainFilter"); const cur=df.value;
+  df.innerHTML='<option value="">全部</option>'+(d.domains||[]).map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join("");
+  df.value=cur;
+  renderExperts();
+}
+function renderExperts(){
+  const f=$("#domainFilter").value;
+  const grid=$("#expertGrid"); grid.innerHTML="";
+  ALL_EXPERTS.filter(e=>!f||e.domain===f).forEach(e=>{
+    const c=el("div","ecard"+(e.active?"":" off"));
+    const kn=(e.knowledge_ids||[]).length;
+    c.innerHTML=`<div class="hd"><div><span class="nm">${esc(e.name)}</span>
+      <div class="meta">${esc(e.domain)} · ${esc(e.specialty||"")}</div></div>
+      <div style="text-align:right">${e.kind==="external"?'<span class="badge ext">外部</span>':`<span class="badge">${esc(e.source||"")}</span>`}
+      ${kn?`<span class="badge kn">知识 ${kn}</span>`:""}
+      ${(e.skills||[]).length?`<span class="badge">技能 ${(e.skills||[]).length}</span>`:""}
+      ${e.model?`<span class="badge ext">${esc(e.model)}</span>`:""}</div></div>
+      <div class="pa">${esc(e.persona||"")}</div>
+      <div class="ops">
+        <button class="mini ghost" data-act="kn" data-id="${e.id}">知识升级</button>
+        <button class="mini ghost" data-act="edit" data-id="${e.id}">编辑</button>
+        <button class="mini ghost" data-act="toggle" data-id="${e.id}">${e.active?"禁用":"启用"}</button>
+        <button class="mini ghost" data-act="del" data-id="${e.id}">删除</button>
+      </div>`;
+    grid.appendChild(c);
+  });
+  grid.querySelectorAll("button[data-act]").forEach(b=>b.addEventListener("click",()=>expertOp(b.dataset.act,b.dataset.id)));
+}
+$("#domainFilter").addEventListener("change",renderExperts);
+
+async function expertOp(act,id){
+  const e=ALL_EXPERTS.find(x=>x.id===id);
+  if(act==="toggle"){await api(`/experts/${id}/toggle`,{method:"POST"});loadExperts();}
+  else if(act==="del"){if(confirm(`删除专家「${e.name}」?`)){await api(`/experts/${id}`,{method:"DELETE"});loadExperts();}}
+  else if(act==="edit"){editExpert(e);}
+  else if(act==="kn"){knowledgePanel(e);}
+}
+
+async function editExpert(e){
+  const isNew=!e;
+  const [md,sk]=await Promise.all([api("/models"),api("/skills")]);
+  const allModels=[...new Set([...(md.models||[]),...(md.discovered||[]),...(e?.model?[e.model]:[])])];
+  const modelOpts='<option value="">跟随会议(默认)</option>'+allModels.map(m=>`<option value="${esc(m)}" ${e?.model===m?"selected":""}>${esc(m)}</option>`).join("");
+  const skillBoxes=(sk.skills||[]).map(s=>`<label class="exp ${ (e?.skills||[]).includes(s.id)?"sel":"" }" style="margin:0">
+      <input type="checkbox" value="${s.id}" ${(e?.skills||[]).includes(s.id)?"checked":""}>
+      <span><span class="nm">${esc(s.name)}</span><div class="dm">${esc(s.desc)}</div></span></label>`).join("");
+  openModal(`<h3>${isNew?"新建专家":"编辑专家"}</h3>
+    <div class="field"><label>名称</label><input type="text" id="m_name" value="${esc(e?.name||"")}"></div>
+    <div class="row"><div><label>领域</label><input type="text" id="m_domain" value="${esc(e?.domain||"")}"></div>
+    <div><label>专长</label><input type="text" id="m_spec" value="${esc(e?.specialty||"")}"></div></div>
+    <div class="field"><label>专属模型(睿动多模型,每个专家可不同;在「模型源」遍历更多)</label>
+      <div class="actions" style="margin:0"><select id="m_model" style="flex:1">${modelOpts}</select>
+      <button class="mini ghost" id="m_test" type="button">联通测试</button><span class="hint" id="m_testHint"></span></div></div>
+    <div class="field"><label>专业技能(发言时按其方法论执行)</label>
+      <div class="experts" id="m_skills" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">${skillBoxes}</div></div>
+    <div class="field"><label>人设(system prompt)</label><textarea id="m_persona" style="min-height:140px">${esc(e?.persona||"")}</textarea></div>
+    <div class="actions"><button id="m_save">保存</button><button class="ghost" onclick="closeModal()">取消</button><span class="hint" id="m_hint"></span></div>`);
+  $("#m_skills").querySelectorAll("input").forEach(cb=>cb.addEventListener("change",()=>cb.closest("label").classList.toggle("sel",cb.checked)));
+  $("#m_test").addEventListener("click",async()=>{
+    const mdl=$("#m_model").value||md.default;
+    $("#m_testHint").textContent=`测试 ${mdl} 中…`;
+    const r=await api("/models/test",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:mdl})});
+    $("#m_testHint").innerHTML=r.ok?`<span style="color:var(--ok)">✓ ${esc(r.model)} 连通 ${r.latency_s}s「${esc(r.reply)}」</span>`
+      :`<span class="err-text">✗ ${esc(r.error||"失败")}</span>`;
+  });
+  $("#m_save").addEventListener("click",async()=>{
+    const body={name:$("#m_name").value.trim(),domain:$("#m_domain").value.trim(),specialty:$("#m_spec").value.trim(),
+      persona:$("#m_persona").value.trim(),model:$("#m_model").value,
+      skills:[...$("#m_skills").querySelectorAll("input:checked")].map(i=>i.value)};
+    if(!body.name||!body.domain||!body.persona){$("#m_hint").textContent="名称/领域/人设必填";return;}
+    try{ if(isNew)await api("/experts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+      else await api(`/experts/${e.id}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+      closeModal();loadExperts();}catch(ex){$("#m_hint").textContent=ex.message;}
+  });
+}
+$("#btnNew").addEventListener("click",()=>editExpert(null));
+
+$("#btnReg").addEventListener("click",()=>{
+  openModal(`<h3>外部 API 注册专家</h3><p class="hint">注册一个已有的 OpenAI-compat 专家 Agent,系统会先探活。</p>
+    <div class="row"><div><label>名称</label><input type="text" id="r_name"></div><div><label>领域</label><input type="text" id="r_domain"></div></div>
+    <div class="field"><label>Endpoint(/chat/completions)</label><input type="url" id="r_ep" placeholder="https://.../v1/chat/completions"></div>
+    <div class="row"><div><label>API Key(可选)</label><input type="text" id="r_key"></div><div><label>模型名(可选)</label><input type="text" id="r_model"></div></div>
+    <div class="actions"><button id="r_save">探活并注册</button><button class="ghost" onclick="closeModal()">取消</button><span class="hint" id="r_hint"></span></div>`);
+  $("#r_save").addEventListener("click",async()=>{
+    $("#r_hint").textContent="探活中…";
+    try{await api("/experts/register",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name:$("#r_name").value.trim(),domain:$("#r_domain").value.trim(),endpoint:$("#r_ep").value.trim(),api_key:$("#r_key").value.trim(),model:$("#r_model").value.trim()})});
+      closeModal();loadExperts();}catch(ex){$("#r_hint").innerHTML=`<span class="err-text">${esc(ex.message)}</span>`;}
+  });
+});
+
+$("#btnFromKn").addEventListener("click",()=>{
+  openModal(`<h3>上传知识 → 快速造业务专家</h3><p class="hint">上传业务文档,系统据此起草专家人设并挂载知识。</p>
+    <div class="row"><div><label>专家名称</label><input type="text" id="f_name"></div><div><label>领域</label><input type="text" id="f_domain"></div></div>
+    <div class="field"><label>专长(可选)</label><input type="text" id="f_spec"></div>
+    <div class="field"><label>业务文档(txt/md/pdf)</label><input type="file" id="f_file"></div>
+    <div class="actions"><button id="f_save">上传并生成</button><button class="ghost" onclick="closeModal()">取消</button><span class="hint" id="f_hint"></span></div>`);
+  $("#f_save").addEventListener("click",async()=>{
+    const name=$("#f_name").value.trim(),domain=$("#f_domain").value.trim(),file=$("#f_file").files[0];
+    if(!name||!domain||!file){$("#f_hint").textContent="名称/领域/文件必填";return;}
+    $("#f_hint").textContent="上传抽取中…";
+    try{const fd=new FormData();fd.append("file",file);
+      const up=await api("/knowledge/upload",{method:"POST",body:fd});
+      $("#f_hint").textContent="生成专家人设中…";
+      await api("/experts/from_knowledge",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name,domain,specialty:$("#f_spec").value.trim(),doc_ids:[up.doc.id]})});
+      closeModal();loadExperts();}catch(ex){$("#f_hint").innerHTML=`<span class="err-text">${esc(ex.message)}</span>`;}
+  });
+});
+
+async function knowledgePanel(e){
+  const d=await api(`/knowledge?expert_id=${encodeURIComponent(e.id)}`);
+  const docs=d.docs||[];
+  openModal(`<h3>知识升级 — ${esc(e.name)}</h3>
+    <p class="hint">为该专家上传文件或抽取 wiki;会议中按议题自动检索相关片段注入,提升专业度。</p>
+    <div class="field"><label>上传文件(txt/md/pdf)</label><input type="file" id="k_file"></div>
+    <div class="actions" style="margin-bottom:14px"><button class="mini" id="k_up">上传</button>
+      <input type="url" id="k_url" placeholder="或粘贴 wiki/网页 URL" style="flex:1;min-width:200px">
+      <button class="mini ghost" id="k_wiki">抽取</button><span class="hint" id="k_hint"></span></div>
+    <label>已挂知识</label><div id="k_list">${docs.length?docs.map(x=>`<div class="docitem"><span>${esc(x.title)} <span class="meta">· ${x.chars} 字 · ${esc(x.source_type)}</span></span><button class="mini ghost" data-del="${x.id}">移除</button></div>`).join(""):'<span class="hint">暂无</span>'}</div>
+    <div class="actions" style="margin-top:14px"><button class="ghost" onclick="closeModal()">关闭</button></div>`);
+  const refresh=()=>knowledgePanel(e);
+  $("#k_up").addEventListener("click",async()=>{
+    const f=$("#k_file").files[0]; if(!f){$("#k_hint").textContent="选个文件";return;}
+    $("#k_hint").textContent="上传中…";
+    try{const fd=new FormData();fd.append("file",f);fd.append("expert_id",e.id);
+      const r=await api("/knowledge/upload",{method:"POST",body:fd});
+      await api(`/knowledge/${r.doc.id}/attach`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({expert_id:e.id})});
+      loadExperts();refresh();}catch(ex){$("#k_hint").innerHTML=`<span class="err-text">${esc(ex.message)}</span>`;}
+  });
+  $("#k_wiki").addEventListener("click",async()=>{
+    const url=$("#k_url").value.trim(); if(!url){$("#k_hint").textContent="粘贴 URL";return;}
+    $("#k_hint").textContent="抓取抽取中…";
+    try{const r=await api("/knowledge/wiki",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url,expert_id:e.id})});
+      await api(`/knowledge/${r.doc.id}/attach`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({expert_id:e.id})});
+      loadExperts();refresh();}catch(ex){$("#k_hint").innerHTML=`<span class="err-text">${esc(ex.message)}</span>`;}
+  });
+  $("#modalBox").querySelectorAll("button[data-del]").forEach(b=>b.addEventListener("click",async()=>{
+    await api(`/knowledge/${b.dataset.del}`,{method:"DELETE"});loadExperts();refresh();}));
+}
+
+$("#btnModelSrc").addEventListener("click",async()=>{
+  const md=await api("/models");
+  openModal(`<h3>模型源(睿动)</h3>
+    <p class="hint">输入睿动 API key 遍历该账号可用的全部模型;验证通过后 key 热更新生效并持久化。留空则用当前已配置的 key。</p>
+    <div class="field"><label>睿动 API Key(可选)</label><input type="text" id="s_key" placeholder="sk-…(留空用当前 key)"></div>
+    <div class="actions"><button id="s_go">遍历模型</button><span class="hint" id="s_hint"></span></div>
+    <div class="field" style="margin-top:12px"><label>可用模型(${(md.discovered||[]).length||"未遍历"})</label>
+      <div id="s_list" class="hint">${(md.discovered||[]).join("、")||"点上方「遍历模型」获取"}</div></div>
+    <div class="actions"><button class="ghost" onclick="closeModal()">关闭</button></div>`);
+  $("#s_go").addEventListener("click",async()=>{
+    $("#s_hint").textContent="遍历中…";
+    try{
+      const r=await api("/models/discover",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({api_key:$("#s_key").value.trim()})});
+      $("#s_hint").innerHTML=`<span style="color:var(--ok)">✓ 发现 ${r.count} 个模型</span>`;
+      $("#s_list").textContent=r.models.join("、");
+    }catch(ex){$("#s_hint").innerHTML=`<span class="err-text">${esc(ex.message)}</span>`;}
+  });
+});
+
+$("#btnKn").addEventListener("click",async()=>{
+  const d=await api("/knowledge"); const docs=d.docs||[];
+  openModal(`<h3>知识库(全部)</h3>${docs.length?docs.map(x=>`<div class="docitem"><span>${esc(x.title)} <span class="meta">· ${x.chars} 字 · ${esc(x.source_type)} ${x.expert_id?"· 已挂专家":""}</span></span><button class="mini ghost" data-del="${x.id}">删除</button></div>`).join(""):'<span class="hint">空</span>'}<div class="actions" style="margin-top:14px"><button class="ghost" onclick="closeModal()">关闭</button></div>`);
+  $("#modalBox").querySelectorAll("button[data-del]").forEach(b=>b.addEventListener("click",async()=>{await api(`/knowledge/${b.dataset.del}`,{method:"DELETE"});$("#btnKn").click();}));
+});
+
+/* ================= 监控仪表盘 ================= */
+let DASH_TIMER=null;
+function startDash(){ loadDash(); if(!DASH_TIMER) DASH_TIMER=setInterval(loadDash,10000); }
+function stopDash(){ if(DASH_TIMER){clearInterval(DASH_TIMER);DASH_TIMER=null;} }
+async function loadDash(){
+  const d=await api("/dashboard");
+  const st=d.stats||{};
+  $("#dashCards").innerHTML=[
+    ["进行中会议(可介入)",d.active_count],["正在讨论的专家",(d.experts_discussing||[]).length],
+    ["已形成会议纪要",d.minutes_total],["近7天会议",st.meetings],
+    ["平均时长(分)",st.avg_duration_min],["总发言轮次",st.total_turns]
+  ].map(([k,v])=>`<div class="ecard" style="text-align:center"><div style="font-size:26px;font-weight:700;color:var(--accent)">${v??0}</div><div class="meta">${k}</div></div>`).join("");
+  if((d.experts_discussing||[]).length){
+    $("#dashCards").innerHTML+=`<div class="ecard" style="grid-column:1/-1"><span class="meta">讨论中:</span> ${d.experts_discussing.map(esc).join(" · ")}</div>`;
+  }
+  const ST={preparing:"准备中",running:"进行中",paused:"已暂停"};
+  $("#dashActive").innerHTML=(d.active||[]).length?`<table><tr><th>主题</th><th>状态</th><th>专家</th><th>发言</th><th>进度</th><th>操作</th></tr>`+
+    d.active.map(m=>`<tr><td>${esc(m.topic)}</td><td>${ST[m.status]||m.status}</td><td>${m.experts}</td><td>${m.turns}</td><td>${esc(m.progress)}</td>
+      <td><button class="mini ghost" data-ctl="intervene" data-mid="${m.id}">介入</button>
+      ${m.status==="paused"?`<button class="mini ghost" data-ctl="resume" data-mid="${m.id}">恢复</button>`:`<button class="mini ghost" data-ctl="pause" data-mid="${m.id}">暂停</button>`}
+      <button class="mini ghost" data-ctl="stop" data-mid="${m.id}">结束</button></td></tr>`).join("")+`</table>`
+    :'<span class="hint">当前无进行中会议</span>';
+  $("#dashActive").querySelectorAll("button[data-ctl]").forEach(b=>b.addEventListener("click",async()=>{
+    if(b.dataset.ctl==="intervene"){
+      const t=prompt("以管理员身份给该会议主持人一句指引(下个议题生效):");
+      if(t&&t.trim()) await api(`/meeting/${b.dataset.mid}/intervene`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t.trim()})});
+      return;
+    }
+    if(b.dataset.ctl==="stop"&&!confirm("强制结束该会议?"))return;
+    await api(`/meeting/${b.dataset.mid}/control`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:b.dataset.ctl})});
+    loadDash();
+  }));
+  $("#dashExperts").innerHTML=(d.experts||[]).length?`<table><tr><th>专家</th><th>发言</th><th>平均(s)</th><th>最慢(s)</th><th>超时</th></tr>`+
+    d.experts.map(e=>`<tr><td>${esc(e.name)}</td><td>${e.turns}</td><td>${e.avg_s}</td><td>${e.max_s}</td><td>${e.slow?`<span class="err-text">${e.slow}</span>`:0}</td></tr>`).join("")+`</table>`
+    :'<span class="hint">暂无数据</span>';
+  $("#dashAlerts").innerHTML=(d.alerts||[]).length?d.alerts.map(a=>`<div class="docitem" style="border-color:#f0d6c4"><span>
+    <span class="meta">${new Date(a.time*1000).toLocaleTimeString("zh-CN")}</span> ${a.kind==="api_fail"?"⚠ API失败":"⏱ 响应超时"} · ${esc(a.detail)}</span></div>`).join("")
+    :'<span class="hint">无告警</span>';
+  $("#dashAudit").innerHTML=(d.audit||[]).map(a=>`<span class="meta">${new Date(a.created_at*1000).toLocaleString("zh-CN")} · ${esc(a.actor)} · ${esc(a.action)} ${esc(a.target||"")} ${esc((a.detail||"").slice(0,40))}</span><br>`).join("")||'<span class="hint">空</span>';
+}
+
+boot();
+</script>
+</body>
+</html>

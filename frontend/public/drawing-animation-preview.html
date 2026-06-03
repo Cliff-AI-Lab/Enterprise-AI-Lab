@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TelegramAgent Drawing Loader Preview</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #fffaf0;
+        --paper-deep: #f1e6cf;
+        --ink: #263646;
+        --ink-soft: rgba(38, 54, 70, 0.3);
+        --accent: #d87993;
+        --wash: rgba(103, 158, 184, 0.22);
+        --shadow: rgba(49, 73, 93, 0.18);
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at 28% 18%, rgba(216, 121, 147, 0.14), transparent 26%),
+          linear-gradient(135deg, #edf6fb, #f8fbfd);
+        color: #1f2e3b;
+      }
+
+      .preview-shell {
+        display: grid;
+        gap: 18px;
+        justify-items: start;
+      }
+
+      .chat-bubble {
+        width: min(520px, calc(100vw - 36px));
+        padding: 18px;
+        border: 1px solid rgba(93, 132, 160, 0.14);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.84);
+        box-shadow: 0 18px 48px rgba(45, 88, 122, 0.12);
+      }
+
+      .bubble-copy {
+        margin: 0 0 12px;
+        color: #273746;
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
+      .drawing-loader {
+        position: relative;
+        width: min(360px, 100%);
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        border: 1px solid rgba(93, 68, 43, 0.16);
+        border-radius: 14px;
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.42) 1px, transparent 1px),
+          linear-gradient(rgba(120, 94, 62, 0.05) 1px, transparent 1px),
+          radial-gradient(circle at 30% 24%, rgba(216, 121, 147, 0.08), transparent 26%),
+          linear-gradient(135deg, var(--paper), var(--paper-deep));
+        background-size:
+          22px 22px,
+          22px 22px,
+          auto,
+          auto;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.52),
+          0 14px 30px var(--shadow);
+      }
+
+      .drawing-loader::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.34;
+        mix-blend-mode: multiply;
+        background-image:
+          radial-gradient(circle at 16% 24%, rgba(61, 43, 27, 0.08) 0 1px, transparent 1px),
+          radial-gradient(circle at 78% 62%, rgba(61, 43, 27, 0.06) 0 1px, transparent 1px);
+        background-size:
+          17px 19px,
+          23px 21px;
+      }
+
+      .paper-wash {
+        position: absolute;
+        inset: 28px;
+        border-radius: 26px;
+        background:
+          radial-gradient(circle at 58% 44%, rgba(216, 121, 147, 0.22), transparent 18%),
+          radial-gradient(circle at 48% 64%, var(--wash), transparent 34%);
+        filter: blur(10px);
+        opacity: 0;
+        animation: wash-in 4.8s var(--ease-out) infinite;
+      }
+
+      .sketch {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .guide {
+        fill: none;
+        stroke: rgba(80, 75, 67, 0.12);
+        stroke-width: 1;
+        stroke-dasharray: 3 8;
+      }
+
+      .sketch-path {
+        fill: none;
+        stroke: var(--ink);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: var(--width, 3);
+        stroke-dasharray: var(--len);
+        stroke-dashoffset: var(--len);
+        opacity: 0.94;
+        animation: draw-line var(--duration, 5.6s) var(--ease-out) infinite;
+        animation-delay: var(--delay, 0s);
+      }
+
+      .sketch-path.soft {
+        stroke: var(--ink-soft);
+      }
+
+      .sketch-path.accent {
+        stroke: var(--accent);
+      }
+
+      .pencil {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 86px;
+        height: 12px;
+        border-radius: 999px;
+        background:
+          linear-gradient(90deg, #2c3440 0 10px, #f0cd7c 10px 68px, #d96f88 68px 86px);
+        box-shadow: 0 5px 14px rgba(37, 45, 54, 0.24);
+        transform-origin: 6px 50%;
+        offset-path: path("M 74 240 C 88 130, 161 82, 233 123 C 290 156, 283 249, 214 279 C 156 303, 94 281, 74 240");
+        offset-rotate: auto;
+        animation: pencil-trace 5.6s cubic-bezier(0.35, 0, 0.15, 1) infinite;
+      }
+
+      .pencil::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 1px;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-right: 12px solid #313131;
+      }
+
+      .loader-label {
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 9px 11px;
+        border-radius: 11px;
+        background: rgba(255, 252, 244, 0.84);
+        color: #536473;
+        font-size: 12px;
+        font-weight: 760;
+        box-shadow: inset 0 0 0 1px rgba(93, 68, 43, 0.08);
+      }
+
+      .dot-row {
+        display: inline-flex;
+        gap: 4px;
+      }
+
+      .dot-row span {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: dot-pulse 1.2s var(--ease-out) infinite;
+      }
+
+      .dot-row span:nth-child(2) {
+        animation-delay: 0.16s;
+      }
+
+      .dot-row span:nth-child(3) {
+        animation-delay: 0.32s;
+      }
+
+      .note {
+        margin: 0;
+        color: #5e7182;
+        font-size: 13px;
+      }
+
+      @keyframes draw-line {
+        0%,
+        10% {
+          stroke-dashoffset: var(--len);
+          opacity: 0;
+        }
+        16% {
+          opacity: 0.92;
+        }
+        74%,
+        100% {
+          stroke-dashoffset: 0;
+          opacity: 0.94;
+        }
+      }
+
+      @keyframes pencil-trace {
+        0%,
+        9% {
+          offset-distance: 0%;
+          opacity: 0;
+          transform: rotate(-10deg) translate(-12px, -5px);
+        }
+        14% {
+          opacity: 1;
+        }
+        74% {
+          offset-distance: 100%;
+          opacity: 1;
+          transform: rotate(-10deg) translate(-12px, -5px);
+        }
+        86%,
+        100% {
+          offset-distance: 100%;
+          opacity: 0;
+          transform: rotate(-10deg) translate(-4px, -12px);
+        }
+      }
+
+      @keyframes wash-in {
+        0%,
+        42% {
+          opacity: 0;
+          transform: scale(0.96);
+        }
+        72%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes dot-pulse {
+        0%,
+        100% {
+          opacity: 0.28;
+          transform: translateY(0);
+        }
+        45% {
+          opacity: 1;
+          transform: translateY(-2px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .paper-wash,
+        .sketch-path,
+        .pencil,
+        .dot-row span {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="preview-shell">
+      <section class="chat-bubble" aria-label="Drawing loader preview">
+        <p class="bubble-copy">小丸子正在把脑子里的画面画出来：</p>
+        <div class="drawing-loader" role="status" aria-label="图片生成中">
+          <div class="paper-wash" aria-hidden="true"></div>
+          <svg class="sketch" viewBox="0 0 360 360" aria-hidden="true">
+            <path class="guide" d="M76 239 C92 132, 161 80, 233 122 C290 155, 285 248, 215 280 C154 307, 91 282, 76 239Z" />
+            <path class="sketch-path soft" style="--len: 740; --delay: 0s; --duration: 5.6s; --width: 1.3" d="M54 260 C70 189, 91 144, 129 111 C160 84, 213 83, 250 111 C289 140, 305 194, 293 246 C279 306, 213 331, 148 313 C90 297, 43 317, 54 260Z" />
+            <path class="sketch-path" style="--len: 520; --delay: .1s; --duration: 5.6s; --width: 3.3" d="M96 218 C103 151, 145 111, 199 111 C250 111, 282 148, 281 199 C280 253, 236 288, 184 288 C132 288, 89 262, 96 218Z" />
+            <path class="sketch-path" style="--len: 430; --delay: .55s; --duration: 5.6s; --width: 3" d="M103 166 C126 117, 172 92, 223 104 C254 112, 278 140, 287 171 C253 153, 225 150, 188 156 C154 162, 129 169, 103 166Z" />
+            <path class="sketch-path soft" style="--len: 300; --delay: .9s; --duration: 5.6s; --width: 2" d="M132 190 C148 184, 162 185, 174 194 M214 194 C229 186, 244 187, 257 196" />
+            <path class="sketch-path" style="--len: 110; --delay: 1.25s; --duration: 5.6s; --width: 2.5" d="M180 229 C191 238, 208 238, 220 229" />
+            <path class="sketch-path accent" style="--len: 280; --delay: 1.5s; --duration: 5.6s; --width: 2.6" d="M126 282 C151 319, 230 319, 255 280 M120 295 C89 304, 67 326, 53 352 M259 294 C293 305, 315 327, 331 352" />
+            <path class="sketch-path soft" style="--len: 260; --delay: 1.9s; --duration: 5.6s; --width: 1.7" d="M69 77 H293 M69 77 V304 M293 77 V304 M92 102 H270 M92 131 H270" />
+          </svg>
+          <div class="pencil" aria-hidden="true"></div>
+          <div class="loader-label">
+            <span>起稿中</span>
+            <span class="dot-row" aria-hidden="true"><span></span><span></span><span></span></span>
+          </div>
+        </div>
+      </section>
+      <p class="note">预览版本：纸面纹理 + 线稿逐笔出现 + 铅笔轨迹 + 后段淡淡上色。</p>
+    </main>
+  </body>
+</html>

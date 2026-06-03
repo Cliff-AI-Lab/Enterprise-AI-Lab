@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# uv
+.venv/
+uv.lock
+
+# Local tool caches
+.npm-cache/
+.audit*-workflow.js
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Phase A 录制产物：默认忽略 traces/，但 traces/golden/*.jsonl 需要纳入版本控制
+# （Phase A 验收标准要求 golden trace 在仓库里给自一致性测试读）
+traces/*
+!traces/golden/
+traces/golden/*
+!traces/golden/.gitkeep
+!traces/golden/*.jsonl
+*.jsonl.gz

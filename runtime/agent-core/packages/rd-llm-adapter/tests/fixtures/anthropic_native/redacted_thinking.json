@@ -1,0 +1,143 @@
+{
+  "_kind": "anthropic_native_fixture",
+  "name": "redacted_thinking",
+  "request": {
+    "input": {
+      "model": "claude-sonnet-4-5",
+      "system_prompt": "",
+      "messages": [
+        {
+          "role": "assistant",
+          "reasoning_blocks": [
+            {
+              "type": "reasoning",
+              "text": "",
+              "redacted": true,
+              "data": "encrypted-thinking"
+            }
+          ],
+          "content": [
+            {
+              "type": "text",
+              "text": "visible"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "continue"
+        }
+      ],
+      "tools": [],
+      "max_tokens": 128
+    },
+    "expected_body": {
+      "model": "claude-sonnet-4-5",
+      "messages": [
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "redacted_thinking",
+              "data": "encrypted-thinking"
+            },
+            {
+              "type": "text",
+              "text": "visible"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "continue"
+            }
+          ]
+        }
+      ],
+      "max_tokens": 128,
+      "stream": true
+    }
+  },
+  "stream": {
+    "raw_chunks": [
+      {
+        "type": "message_start",
+        "message": {
+          "usage": {
+            "input_tokens": 4
+          }
+        }
+      },
+      {
+        "type": "content_block_start",
+        "index": 0,
+        "content_block": {
+          "type": "redacted_thinking",
+          "data": "encrypted-thinking"
+        }
+      },
+      {
+        "type": "content_block_stop",
+        "index": 0
+      },
+      {
+        "type": "content_block_start",
+        "index": 1,
+        "content_block": {
+          "type": "text"
+        }
+      },
+      {
+        "type": "content_block_delta",
+        "index": 1,
+        "delta": {
+          "type": "text_delta",
+          "text": "done"
+        }
+      },
+      {
+        "type": "content_block_stop",
+        "index": 1
+      },
+      {
+        "type": "message_delta",
+        "delta": {
+          "stop_reason": "end_turn"
+        },
+        "usage": {
+          "output_tokens": 3
+        }
+      },
+      {
+        "type": "message_stop"
+      }
+    ],
+    "expected_turn_done": {
+      "stop_reason": "stop",
+      "raw_stop_reason": "end_turn",
+      "usage": {
+        "input_tokens": 4,
+        "output_tokens": 3,
+        "total_tokens": 7
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "",
+          "signature": null,
+          "redacted": true,
+          "data": "encrypted-thinking"
+        },
+        {
+          "type": "text",
+          "text": "done"
+        }
+      ],
+      "tool_calls": [],
+      "invalid_tool_calls": []
+    }
+  }
+}

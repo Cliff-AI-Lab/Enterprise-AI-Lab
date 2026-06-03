@@ -1,0 +1,65 @@
+name: Release
+
+# 触发：tag 格式 rd-<package-name>-v<version>
+# 例: rd-agent-contracts-v1.0.0
+on:
+  push:
+    tags:
+      - "rd-*-v*"
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Verify release tag
+        id: parse
+        run: uv run --no-sync python tools/scripts/verify_release_tag.py "$GITHUB_REF_NAME"
+
+      - name: Sync deps (含 dev tools)
+        run: uv sync --group dev
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Test
+        run: uv run pytest
+
+      - name: Build wheels
+        run: |
+          rm -rf dist
+          uv build --wheel packages/rd-agent-contracts
+          uv build --wheel packages/rd-llm-adapter
+          uv build --wheel packages/rd-agent-core
+          uv build --wheel packages/rd-llm-gateway
+          uv build --wheel packages/rd-replay-evals
+          uv build --wheel tools
+          uv build --wheel "${{ steps.parse.outputs.pkg_dir }}"
+          ls -la dist/
+
+      - name: Verify wheel install smoke
+        run: uv run --no-sync python tools/scripts/verify_wheel_install.py "${{ steps.parse.outputs.pkg }}" --dist-dir dist
+
+      - name: Create release + upload wheel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # 找出本次 build 的 wheel（按 package name 过滤，避免误传同 dist 目录里其他 pkg 的 wheel）
+          PKG_UNDERSCORED=$(echo "${{ steps.parse.outputs.pkg }}" | tr '-' '_')
+          WHEEL=$(ls dist/${PKG_UNDERSCORED}-${{ steps.parse.outputs.version }}-*.whl)
+          test -f "$WHEEL" || { echo "Wheel not found: $WHEEL"; exit 1; }
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes "Auto-built wheel for ${{ steps.parse.outputs.pkg }} v${{ steps.parse.outputs.version }}" \
+            "$WHEEL"

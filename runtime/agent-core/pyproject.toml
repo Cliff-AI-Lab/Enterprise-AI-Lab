@@ -1,0 +1,46 @@
+[project]
+name = "ruidong-agent-core-workspace"
+version = "0.0.0"
+description = "Agent Runtime PaaS monorepo workspace root (not published)"
+requires-python = ">=3.12"
+dependencies = [
+    "rd-agent-core",
+    "rd-agent-contracts",
+    "rd-llm-adapter",
+    "rd-llm-gateway",
+    "rd-replay-evals",
+    "rd-tools",
+]
+
+[tool.uv.workspace]
+members = ["packages/rd-*", "tools"]
+
+[tool.uv.sources]
+rd-agent-core = { workspace = true }
+rd-agent-contracts = { workspace = true }
+rd-llm-adapter = { workspace = true }
+rd-llm-gateway = { workspace = true }
+rd-replay-evals = { workspace = true }
+rd-tools = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "respx>=0.21",
+    "ruff>=0.5",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N"]
+
+[tool.pytest.ini_options]
+testpaths = ["packages/*/tests", "tools/tests", "examples/*/tests"]
+python_files = ["test_*.py"]
+asyncio_mode = "auto"
+# importlib 模式让相同文件名（如 test_smoke.py）在不同 tests/ 目录下不冲突
+addopts = "--import-mode=importlib"
